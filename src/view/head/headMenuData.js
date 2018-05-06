@@ -1,0 +1,27 @@
+export let Menu = [
+    {
+        name:'我的',
+        num:1,
+        to:'home'
+    },
+    {
+        name:'帮助',
+        num:2,
+        to:'help'
+    },
+    {
+        name:'通知',
+        num:3,
+        to:'ask'
+    },
+    {
+        name:'私信',
+        num:4,
+        to:'info'
+    },
+    {
+        name:'设置',
+        num:5,
+        to:'set'
+    }
+]
