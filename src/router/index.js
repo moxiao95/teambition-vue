@@ -1,13 +1,14 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-Vue.use(Router)
-import home from '@/view/mid'
+import Vue from 'vue';
+import Router from 'vue-router';
+Vue.use(Router);
+import defa from '@/view/mid/defa';
+
 
 let routes = [
   {
     path:'/',
-    name:'home',
-    component:home
+    name:'defa',
+    component:defa
   }
 ]
 

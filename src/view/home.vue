@@ -8,11 +8,10 @@
     </div>
 </template>
 <script>
-import Header from './head/head'
-import Mid from './mid'
+import Header from '@/view/head/head';
 export default {
     components:{
-        Header,Mid
+        Header
     }
 }
 </script>
