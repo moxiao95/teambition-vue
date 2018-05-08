@@ -20,7 +20,7 @@
                     class="add-icon"
                     @click="addBtnShow"
                 >
-                    <Icon type="plus-circled" size="34"></Icon>
+                    <Icon type="plus-circled" size="36"></Icon>
                 </div>
                 <!-- 点击input显示的 -->
                 <div 
@@ -39,12 +39,7 @@
                     class="add-items"
                     v-show="showAddBtn"
                 >
-                    <router-link 
-                        tag="div"
-                        :to="{name:'defa'}"
-                        v-for="item in addData"
-                        :key="item.num"
-                    >{{item.title}}</router-link>
+                    <Item />
                 </div>
             </div>
             <!-- 中间的点击回到默认的页面 -->
@@ -69,6 +64,7 @@
 </template>
 <script>
 import {Menu} from './headMenuData';
+import Item from "./item";
 let sBtnData = [
     {
         title:'近期完成的任务',
@@ -106,6 +102,9 @@ let addData = [
     }
 ]
 export default {
+    components:{
+        Item
+    },
     data(){
         return {
             Menu,
@@ -117,12 +116,12 @@ export default {
     },
     methods:{
         addBtnShow(){
-            this.$store.commit('addBtnShow');
+            this.$store.commit('addBtnShow',{bl:!this.$store.state.showAddBtn});
             this.showTask = false;
         },
         inpFocus(){
             this.showTask = true;
-            this.$store.commit('addBtnShow');
+            this.$store.commit('addBtnShow',{bl:false});
         },
         inpBlur(){
             this.showTask = false;
@@ -144,14 +143,6 @@ export default {
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 0 1px 1px rgb(199, 198, 198);
-}
-.add-items div{
-    font: 20px/36px "微软雅黑";
-    text-align: center;
-    cursor: pointer;
-}
-.add-items div:hover{
-    background-color: #e2e4e5;
 }
 .to-search{
     width: 200px;
@@ -220,7 +211,7 @@ export default {
     color: #fff;
     position: absolute;
     right: -40px;
-    top: 10px;
+    top: 9px;
     cursor: pointer;
 }
 .page-title {

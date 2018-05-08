@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" @click="noShowBtn" >
     <home />
   </div>
 </template>
@@ -10,6 +10,13 @@ export default {
   name: 'App',
   components:{
     home
+  },
+  methods:{
+    noShowBtn(e){
+      if(e.target.className !== 'ivu-icon ivu-icon-plus-circled'){
+        this.$store.commit('addBtnShow',{bl:false});
+      }
+    }
   }
 }
 </script>

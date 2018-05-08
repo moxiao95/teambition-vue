@@ -1,5 +1,6 @@
 <template>
 <div class="content-box">
+    <!-- 拥有的项目 -->
     <section class="dis-item">
         <h5>我拥有的项目</h5>
         <!-- 上面的显示的项目 -->
@@ -25,6 +26,7 @@
             </li>
         </ul>
     </section>
+    <!-- 删除掉的项目 -->
     <section>
         <h5>
             <span>项目回收站</span>
@@ -39,15 +41,29 @@
             v-show="showRecycle"
         >
             <li
+                style="background-image:url('https://mailimg.teambition.com/logos/cover-media.jpg')"
                 v-for="i in 5"
                 :key="i"
-            >{{i}}</li>
+            >
+                <span>{{i}}</span>
+            </li>
         </ul>
+    </section>
+    <!-- 点击添加之后显示的定义框 -->
+    <section 
+        class="show-add-item"
+        v-show="showAddBox"
+    >
+        <AddData />
     </section>
 </div>
 </template>
 <script>
+import AddData from "./smallModular/addData";
 export default {
+    components:{
+        AddData 
+    },
     data(){
         return{
             num:4,
@@ -56,28 +72,28 @@ export default {
         }
     },
     methods:{
-        liMouseOver(){
+        liMouseOver(){ // 添加蓝色字体calss
             this.disBlue = true;
         },
-        liMouseUp(){
+        liMouseUp(){ // 去掉蓝色字体calss
             this.disBlue = false;
         },
-        showOrDis(e){
-            console.log(123)
-            console.log(e.target)
+        showOrDis(e){ //显示or隐藏
             this.showRecycle = !this.showRecycle;
         },
-        addItem(){
-            console.log(123)
-            this.$store.commit('addItem',{title:Math.random(),num:Math.random()})
+        addItem(){ // 添加数据
+            this.$store.commit('disAddBox',{bl:true})
         },
-        itemDetails(){
+        itemDetails(){ // 进去详情页面
             console.log(123)
         }
     },
     computed:{
         hasItemData(){
             return this.$store.state.hasItemData
+        },
+        showAddBox(){
+            return this.$store.state.showAddBox
         }
     }
 }
@@ -141,6 +157,17 @@ ul li:hover {
     box-shadow: 3px 3px 3px 3px rgb(199, 198, 198);
     transform: translateY(-3px);
     transition: 0.3s;
+}
+.show-add-item {
+    width: 300px;
+    background-color: #fff;
+    position: fixed;
+    top: 150px;
+    left:50%;
+    margin-left: -150px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 3px 3px rgb(199, 198, 198);
+    z-index: 99;
 }
 
 </style>
