@@ -55,7 +55,7 @@ export default{
             let info = this.info.trim();
             let id = Math.random() + Date.now(); 
             if(title !== '' && info !== ''){
-                this.$store.commit('addItem',{title:title,num:this.info,id});
+                this.$store.commit('addItem',{title:title,num:this.info,id,star:false});
                 this.title='';
                 this.info='';
             }
