@@ -4,7 +4,7 @@ Vue.use(Router);
 import defa from '@/view/mid/defa';
 import other from '@/view/mid/other';
 
-
+//定义路由
 let routes = [
   {
     path:'/',

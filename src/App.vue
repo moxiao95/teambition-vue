@@ -3,7 +3,6 @@
     <home />
   </div>
 </template>
-
 <script>
 import home from './view/home'
 export default {
