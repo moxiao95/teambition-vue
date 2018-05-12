@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="mr-bot">
     <Header :style="{position: 'fixed', width: '100%'}">
         <Menu mode="horizontal" theme="dark" active-name="1">
             <div class="fl">
@@ -135,6 +135,9 @@ export default {
 }
 </script>
 <style scoped>
+.mr-bot{
+    margin-bottom:50px;
+}
 .add-items{
     position: absolute;
     left: 345px;
@@ -183,6 +186,9 @@ export default {
     width: 420px;
     margin: 0 auto;
     margin-right: 20px;
+}
+.layout-nav li{
+    padding: 10px 10px 0;
 }
 .search-item{
     width: 300px;

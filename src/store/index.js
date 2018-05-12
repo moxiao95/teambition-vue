@@ -19,6 +19,10 @@ let store = new Vuex.Store({
         },
         disAddBox(state,params){
             state.showAddBox = params.bl
+        },
+        toStar(state,params){
+            let index = state.hasItemData.findIndex(item=>item===params)
+            state.hasItemData[index].star = !state.hasItemData[index].star
         }
     },
     actions:{}

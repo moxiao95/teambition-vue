@@ -1,18 +1,26 @@
 <template>
 <div class="content-box">
+    <section class="star-items" v-show="starItemShow">
+        <h5>星标项目</h5>
+        <ul class="item-list clearfix">
+            <ChildItem
+                v-for="item in starList"
+                :key="item.id"
+                :item="item"
+            >{{item.title}}</ChildItem>
+        </ul>
+    </section>
     <!-- 拥有的项目 -->
     <section class="dis-item">
         <h5>我拥有的项目</h5>
         <!-- 上面的显示的项目 -->
         <ul class="item-list clearfix">
             <!-- 已有的项目 -->
-            <li style="background-image:url('https://mailimg.teambition.com/logos/cover-media.jpg')"
+            <ChildItem
                 v-for="item in hasItemData"
-                :key="item.num"
-                @click='itemDetails'
-            >
-                <span>{{item.title}}</span>
-            </li>
+                :key="item.id"
+                :item="item"
+            ></ChildItem>
             <!-- 创建新项目按钮 -->
             <li 
                 @mouseenter.self="liMouseOver"
@@ -60,13 +68,14 @@
 </template>
 <script>
 import AddData from "./smallModular/addData";
+import ChildItem from "./smallModular/childItem";
 export default {
     components:{
-        AddData 
+        AddData,
+        ChildItem
     },
     data(){
         return{
-            num:4,
             disBlue:false,
             showRecycle:false
         }
@@ -83,9 +92,6 @@ export default {
         },
         addItem(){ // 添加数据
             this.$store.commit('disAddBox',{bl:true})
-        },
-        itemDetails(){ // 进去详情页面
-            console.log(123)
         }
     },
     computed:{
@@ -94,11 +100,23 @@ export default {
         },
         showAddBox(){
             return this.$store.state.showAddBox
+        },
+        starItemShow(){
+            let data = this.$store.state.hasItemData.filter(item=>item.star)
+            return data.length>0?true:false
+        },
+        starList(){
+            let data = this.$store.state.hasItemData.filter(item=>item.star)
+            console.log('数据：',data)
+            return data;
         }
     }
 }
 </script>
 <style scoped>
+.star-items{
+    padding-top: 10px;
+}
 .blue{
     color: rgb(172, 83, 245);
 }
@@ -112,8 +130,7 @@ export default {
     clear: both;
 }
 .dis-item {
-    margin-top:64px;
-    padding-top:20px;
+    padding-top:30px;
     margin-bottom: 20px;
 }
 h5 {
@@ -132,12 +149,6 @@ h5 span{
     height: 128px;
     margin: 20px 35px;
     border-radius: 5px;
-}
-.item-list li span{
-    float: left;
-    font: 20px/40px "微软雅黑";
-    color: #fff;
-    margin-left: 16px;
 }
 .add-item {
     background-color: rgb(244, 248, 252);
