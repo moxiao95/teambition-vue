@@ -33,7 +33,7 @@
             <Button 
                 class="add-btn" 
                 type="primary"
-                @click="addItems"
+                @click.stop="addItems"
             >完成并创建</Button>
         </div>
     </div>
@@ -48,9 +48,11 @@ export default{
     },
     methods:{
         closeAddData(){
-            this.$store.commit('disAddBox',{bl:false})
+            this.$store.commit('disAddBox',{bl:false});
+            this.$store.commit('addBtnShow',{bl:false});
         },
         addItems(){
+            console.log(123)
             let title = this.title.trim();
             let info = this.info.trim();
             let id = Math.random() + Date.now();
@@ -61,6 +63,7 @@ export default{
                 this.info='';
             }
             this.$store.commit('disAddBox',{bl:false});
+            this.$store.commit('addBtnShow',{bl:false});
         }
     }
 }

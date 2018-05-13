@@ -16,20 +16,27 @@ export default {
     },
     data(){
         return {
-        list:this.$store.state.hasItemData
+            list:this.$store.state.hasItemData,
+            delList:this.$store.state.delItemData
         }
     },
     watch:{
         list:{
             deep:true,
             handler(){
-                localStorage.setItem('team-list',JSON.stringify(this.list))
+                localStorage.setItem('team-list',JSON.stringify(this.list));
+            }
+        },
+        delList:{
+            deep:true,
+            handler(){
+                localStorage.setItem('del-list',JSON.stringify(this.delList));
             }
         }
     },
     computed:{
         showAdd(){
-            return this.$store.state.showAddBox
+            return this.$store.state.showZIndexBox
         }
     }
 }
@@ -45,7 +52,7 @@ export default {
 .layout{
     position: relative;
     border-radius: 4px;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 .layout div{
     background-color: #fff;

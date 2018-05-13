@@ -116,12 +116,12 @@ export default {
     },
     methods:{
         addBtnShow(){
-            this.$store.commit('addBtnShow',{bl:!this.$store.state.showAddBtn});
+            this.$store.commit('changeHeadBtn',{bl:!this.$store.state.showAddBtn});
             this.showTask = false;
         },
         inpFocus(){
             this.showTask = true;
-            this.$store.commit('addBtnShow',{bl:false});
+            this.$store.commit('changeHeadBtn',{bl:false});
         },
         inpBlur(){
             this.showTask = false;
@@ -129,7 +129,7 @@ export default {
     },
     computed:{
         showAddBtn(){
-            return this.$store.state.showAddBtn;
+            return this.$store.state.headItemAdd;
         }
     }
 }
@@ -137,6 +137,8 @@ export default {
 <style scoped>
 .mr-bot{
     margin-bottom:50px;
+    position: relative;
+    z-index: 55;
 }
 .add-items{
     position: absolute;
@@ -146,6 +148,7 @@ export default {
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 0 1px 1px rgb(199, 198, 198);
+    z-index: 11;
 }
 .to-search{
     width: 200px;

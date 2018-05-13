@@ -1,6 +1,6 @@
 <template>
   <section class="show-other">
-        <div @click.self="addItem">项目</div>
+        <div @click.stop="addItem">项目</div>
         <div>任务</div>
         <div>文件</div>
         <div>日程</div>
@@ -11,7 +11,9 @@
 export default{
     methods:{
         addItem(){ // 添加数据
-            this.$store.commit('disAddBox',{bl:true})
+            this.$store.commit('disAddBox',{bl:true});
+            this.$store.commit('addBtnShow',{bl:true});
+            this.$store.commit('noneHeadBtn',{bl:false})
         }
     }
 }

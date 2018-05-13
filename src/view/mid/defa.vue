@@ -1,8 +1,8 @@
 <template>
 <div class="content-box">
     <section class="star-items" v-show="starItemShow">
-        <h5>星标项目</h5>
-        <ul class="item-list clearfix">
+        <h5>标记项目</h5>
+        <ul class="items-list clearfix">
             <ChildItem
                 v-for="item in starList"
                 :key="item.id"
@@ -14,7 +14,7 @@
     <section class="dis-item">
         <h5>我拥有的项目</h5>
         <!-- 上面的显示的项目 -->
-        <ul class="item-list clearfix">
+        <ul class="items-list clearfix">
             <!-- 已有的项目 -->
             <ChildItem
                 v-for="item in hasItemData"
@@ -27,7 +27,7 @@
                 @mouseleave.self="liMouseUp"
                 class="add-item"
                 :class="{'blue':disBlue}"
-                @click="addItem"
+                @click.stop="addItem"
             >
                 <Icon type="plus-circled" size="40"></Icon>
                 <div>创建新项目</div>
@@ -45,15 +45,15 @@
         </h5>
         <!-- 底下删除的项目 -->
         <ul 
-            class="item-list clearfix"
+            class="items-list clearfix"
             v-show="showRecycle"
         >
             <li
                 style="background-image:url('https://mailimg.teambition.com/logos/cover-media.jpg')"
-                v-for="i in 5"
-                :key="i"
+                v-for="item in showDelList"
+                :key="item.id"
             >
-                <span>{{i}}</span>
+                <span class="del-title">{{item.title}}</span>
             </li>
         </ul>
     </section>
@@ -64,15 +64,24 @@
     >
         <AddData />
     </section>
+    <!-- 这是点击修改的时候显示的框 -->
+    <section
+        class="more-item"
+        v-show="showChangeBox"
+    >
+        <Edit />
+    </section>
 </div>
 </template>
 <script>
 import AddData from "./smallModular/addData";
 import ChildItem from "./smallModular/childItem";
+import Edit from "./smallModular/edit"
 export default {
     components:{
         AddData,
-        ChildItem
+        ChildItem,
+        Edit
     },
     data(){
         return{
@@ -87,33 +96,54 @@ export default {
         liMouseUp(){ // 去掉蓝色字体calss
             this.disBlue = false;
         },
-        showOrDis(e){ //显示or隐藏
+        showOrDis(){ //显示or隐藏
             this.showRecycle = !this.showRecycle;
         },
         addItem(){ // 添加数据
             this.$store.commit('disAddBox',{bl:true})
+            this.$store.commit('addBtnShow',{bl:true})
         }
     },
     computed:{
         hasItemData(){
-            return this.$store.state.hasItemData
+            return this.$store.state.hasItemData;
         },
         showAddBox(){
-            return this.$store.state.showAddBox
+            return this.$store.state.showAddBtn;
         },
         starItemShow(){
-            let data = this.$store.state.hasItemData.filter(item=>item.star)
-            return data.length>0?true:false
+            let data = this.$store.state.hasItemData.filter(item=>item.star);
+            return data.length>0?true:false;
         },
         starList(){
-            let data = this.$store.state.hasItemData.filter(item=>item.star)
-            console.log('数据：',data)
+            let data = this.$store.state.hasItemData.filter(item=>item.star);
             return data;
+        },
+        showChangeBox(){
+            return this.$store.state.showChangeBox;
+        },
+        showDelList(){
+            return this.$store.state.delItemData;
         }
     }
 }
 </script>
 <style scoped>
+.del-title{
+    text-indent: 20px;
+}
+.more-item{
+    position: absolute;
+    z-index: 88;
+    top: 100px;
+    left: 50%;
+    margin-left: -250px;
+    width: 500px;
+    background-color: #fff;
+    padding-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 3px 3px rgb(199, 198, 198);
+}
 .star-items{
     padding-top: 10px;
 }
@@ -143,12 +173,16 @@ h5 span{
     font-size: 14px;
     cursor: pointer;
 }
-.item-list li{
+.items-list li{
     float: left;
     width: 254px;
     height: 128px;
     margin: 20px 35px;
     border-radius: 5px;
+    border: 2px solid #fff;
+}
+.items-list .star-li-show{
+    border-color: rgb(247, 200, 140);
 }
 .add-item {
     background-color: rgb(244, 248, 252);
