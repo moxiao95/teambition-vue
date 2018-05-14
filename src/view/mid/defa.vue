@@ -179,10 +179,9 @@ h5 span{
     height: 128px;
     margin: 20px 35px;
     border-radius: 5px;
-    border: 2px solid #fff;
 }
 .items-list .star-li-show{
-    border-color: rgb(247, 200, 140);
+    border-color: rgb(157, 255, 0);
 }
 .add-item {
     background-color: rgb(244, 248, 252);

@@ -1,30 +1,38 @@
 <template>
-    <li style="background-image:url('https://mailimg.teambition.com/logos/cover-media.jpg')"
-        @click='itemDetails'
-        @mouseover="liOver"
-        @mouseout="liOut"
-        :class="{'star-li-show':item.star}"
+    <router-link style="background-image:url('https://mailimg.teambition.com/logos/cover-media.jpg')"
+        tag="li"
+        :to="{name:'other',query:{user:item.id}}"
     >
         <span class="title-text">{{item.title}}</span>
+        <!-- 点击收藏的星标 -->
         <span 
             class="star-btn"
-            v-show="starShow"
             @click.stop="toStar"
         >
             <Icon 
                 type="star" 
                 size="24"
-                :class="{'is-star':item.star}"
             ></Icon>
         </span>
+        <!-- 己经是收藏的显示 -->
+        <span 
+            class="star-btn-yes"
+            v-show="item.star"
+            @click.stop="toStar"
+        >
+            <Icon 
+                type="star" 
+                size="24"
+            ></Icon>
+        </span>
+        <!-- 修改详情 -->
         <span
             class="edit-btn"
-            v-show="starShow"
             @click.stop="editData(item)"
         >
             <Icon type="edit"></Icon>
         </span>
-    </li>
+    </router-link>
 </template>
 <script>
 export default{
@@ -63,10 +71,17 @@ export default{
 }
 </script>
 <style>
+li:hover .star-btn{
+    display: block;
+}
+li:hover .edit-btn{
+    display: block;
+}
 .title-text{
     margin-left: 16px;
 }
 .edit-btn{
+    display: none;
     position: absolute;
     top: 0px;
     right: 10px;
@@ -76,7 +91,8 @@ export default{
 li{
     position: relative;
 }
-li .star-btn{
+.star-btn{
+    display: none;
     opacity: .8;
     position: absolute;
     top: 0;
@@ -84,12 +100,17 @@ li .star-btn{
     padding: 2px 5px;
     color: rgb(132, 135, 136);
 }
+.star-btn-yes{
+    opacity: .8;
+    position: absolute;
+    top: 0;
+    right: 50px;
+    padding: 2px 5px;
+    color: yellow;
+}
 li span{
     float: left;
     font: 20px/40px "微软雅黑";
     color: #fff;
-}
-.is-star{
-    color: yellow;
 }
 </style>

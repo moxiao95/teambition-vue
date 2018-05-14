@@ -116,7 +116,8 @@ export default {
     },
     methods:{
         addBtnShow(){
-            this.$store.commit('changeHeadBtn',{bl:!this.$store.state.showAddBtn});
+            let showBl = !this.showAddBtn;
+            this.$store.commit('changeHeadBtn',{bl:showBl});
             this.showTask = false;
         },
         inpFocus(){
@@ -185,13 +186,17 @@ export default {
     top: 15px;
     left: 20px;
 }
-.layout-nav{
+/* .layout-nav{
     width: 420px;
     margin: 0 auto;
     margin-right: 20px;
-}
+} */
 .layout-nav li{
-    padding: 10px 10px 0;
+    padding: 0 10px;
+}
+.layout-nav li span{
+    font: 20px/60px "微软雅黑";
+    
 }
 .search-item{
     width: 300px;

@@ -39,6 +39,20 @@
     </div>
 </template>
 <script>
+let list = [
+    {
+        title:'待处理',
+        childItem:[]
+    },
+    {
+        title:'进行中',
+        childItem:[]
+    },
+    {
+        title:'已完成',
+        childItem:[]
+    }
+]
 export default{
     data(){
         return {
@@ -52,7 +66,6 @@ export default{
             this.$store.commit('addBtnShow',{bl:false});
         },
         addItems(){
-            console.log(123)
             let title = this.title.trim();
             let info = this.info.trim();
             let id = Math.random() + Date.now();

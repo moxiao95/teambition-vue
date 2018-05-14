@@ -2,7 +2,6 @@
     <div class="layout">
         <Layout>
             <Header></Header>
-            <!-- <Mid></Mid> -->
             <router-view></router-view>
             <div id="boxs" v-show="showAdd"></div>
         </Layout>

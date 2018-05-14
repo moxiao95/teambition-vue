@@ -12,7 +12,7 @@ let routes = [
     component:defa
   },
   {
-    path:'/other?num',
+    path:'/other',
     name:'other',
     component:other
   }
