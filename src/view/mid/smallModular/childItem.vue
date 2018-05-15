@@ -32,6 +32,7 @@
         >
             <Icon type="edit"></Icon>
         </span>
+        <div class="item-info-text">{{item.info}}</div>
     </router-link>
 </template>
 <script>
@@ -71,6 +72,14 @@ export default{
 }
 </script>
 <style>
+.item-info-text{
+    float: left;
+    width: 70%;
+    margin-left: 10px;
+    font: 14px/20px "微软雅黑";
+    color: #fff;
+    overflow: hidden;
+}
 li:hover .star-btn{
     display: block;
 }

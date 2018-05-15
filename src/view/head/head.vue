@@ -137,7 +137,7 @@ export default {
 </script>
 <style scoped>
 .mr-bot{
-    margin-bottom:50px;
+    height: 64px;
     position: relative;
     z-index: 55;
 }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="route-other-box">
         <div class="other-head">
             <!-- 左侧的导航 -->
             <div class="link-box">
@@ -16,50 +16,94 @@
                     </p>
             </div>
             <!-- 点击上面导航显示的东西 -->
-            <AllItem />
+            <AllItem class="link-click-show" v-show="showClickBox"/>
+            <h4 class="other-box-title">任务</h4>
         </div>
-        <section>
-
-      </section>
+        <section class="other-child-item clearfix">
+            <ItemTask class="other-item-task"/>
+            <ItemTask class="other-item-task"/>
+            <ItemTask class="other-item-task"/>
+            <ItemTask class="other-item-task"/>
+            <ItemTask class="other-item-task"/>
+        </section>
   </div>
 </template>
 <script>
 import AllItem from '@/view/mid/smallModular/allItem'
+import ItemTask from '@/view/mid/smallModular/itemTask'
 export default{
     components:{
-        AllItem
+        AllItem,ItemTask
     },
     data(){
         return {
-            
+            showClickBox: false
         }
     },
     methods:{
         showAllItem(){
-            console.log(123)
+            this.showClickBox = !this.showClickBox;
         }
     },
     computed:{
         nowItem(){
             let id = this.$route.query.user===[]?1526108914994:this.$route.query.user;
             let item = this.$store.state.hasItemData.find(item=>item.id=== +id);
-            console.log(this.$store.state.hasItemData);
             return item;
         }
     }
 }
 </script>
 <style>
+.other-item-task{
+    float: left;
+    width: 200px;
+    height: 700px;
+    border-radius: 5px;
+    box-shadow: 2px 3px 3px 3px rgb(197, 196, 196);
+    margin: 0 auto 20px;
+}
+.other-box-title{
+    font: bold 20px/40px "微软雅黑";
+    position: absolute;
+    left: 50%;
+    margin-left: -20px;
+}
+.link-click-show{
+    width: 300px;
+    height: auto;
+    border-radius: 5px;
+    position: absolute;
+    top: 44px;
+    left: 30px;
+    background: rgb(253, 248, 248);
+    box-shadow: 2px 2px 2px 2px rgb(161, 161, 161, .4);
+    z-index: 99;
+    font: 20px/30px "微软雅黑";
+}
+.route-other-box{
+    position: relative;
+}
+.other-child-item{
+    padding: 20px 80px;
+}
+.other-child-item>div{
+    float: left;
+    width: 200px;
+    height: 300px;
+    border: 2px solid #000;
+    margin-bottom: 10px;
+}
 .other-head{
-    height: 60px;
-    border-bottom: 1px solid #000;
-    background-color: rgb(236, 235, 235);
+    height: 40px;
+    background-color: rgb(243, 241, 241, .7);
+    position: relative;
 }
 .link-box{
     float: left;
-    font: 20px/60px "微软雅黑";
+    font: 20px/40px "微软雅黑";
     color: #000;
-    margin: 3px 20px 0;
+    margin: 0 20px;
 }
 .link-box span{
     cursor: pointer;

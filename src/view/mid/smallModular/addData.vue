@@ -25,7 +25,7 @@
                 class="inps" 
                 type="textarea" 
                 :autosize="true" 
-                placeholder="项目简介(必填)" 
+                placeholder="项目简介(选填)" 
                 style="width: 240px"
             />
         </div>
@@ -70,8 +70,8 @@ export default{
             let info = this.info.trim();
             let id = Math.random() + Date.now();
             id = Math.round(id) 
-            if(title !== '' && info !== ''){
-                this.$store.commit('addItem',{title:title,info:info,id,star:false});
+            if(title !== ''){
+                this.$store.commit('addItem',{title:title,info:info,id,star:false,list});
                 this.title='';
                 this.info='';
             }

@@ -44,7 +44,8 @@ let store = new Vuex.Store({
         toChangeItem(state,params){ // 修改项目的title和info
             let item = state.wantChangeItem;
             let index = state.hasItemData.findIndex(i=>i===item);
-            if(params.title==='' || params.info===''){
+            console.log(params.title)
+            if(params.title===''){
                 return;
             }
             state.hasItemData[index].title = params.title;

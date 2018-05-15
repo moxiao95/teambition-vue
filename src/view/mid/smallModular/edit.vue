@@ -16,7 +16,6 @@
             :placeholder="changeItem.title===''?'请输入新的项目名称':changeItem.title" 
             class="name-change"
             v-model="itemTitle"
-            @focus="inputFocus"
         ></Input>
         <div>项目简介:</div>
         <Input 
@@ -24,7 +23,6 @@
             :placeholder="changeItem.info===''?'请输入新的项目简介':changeItem.info" 
             class="info-cahnge"
             v-model="itemInfo"
-            @focus="inputFocus"
         ></Input>
         <Button 
             type="error" long 
@@ -60,11 +58,13 @@ export default{
             this.itemTitle = '';
             this.itemInfo = '';
         },
-        inputFocus(e){
-            console.log(123,e)
-        },
         yesChange(){
-            this.$store.commit('toChangeItem',{title:this.itemTitle,info:this.itenInfo});
+            this.itemTitle = this.itemTitle.trim();
+            this.itemInfo = this.itemInfo.trim();
+            if(this.itemTitle.length>7){
+                this.itemTitle = this.itemTitle.slice(0,6)
+            }
+            this.$store.commit('toChangeItem',{title:this.itemTitle,info:this.itemInfo});
             this.$store.commit('disAddBox',{bl:false});
             this.$store.commit('changeBox',{bl:false});
             this.itemTitle = '';
