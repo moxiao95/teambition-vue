@@ -57,11 +57,13 @@ export default{
 <style>
 .other-item-task{
     float: left;
-    width: 200px;
+    width: 280px;
     height: 700px;
     border-radius: 5px;
-    box-shadow: 2px 3px 3px 3px rgb(197, 196, 196);
-    margin: 0 auto 20px;
+    box-shadow: 2px 3px 3px 3px rgb(165, 165, 165);
+    margin-right: 10px;
+    background-color: rgb(236, 234, 234);
+    overflow: auto;
 }
 .other-box-title{
     font: bold 20px/40px "微软雅黑";
