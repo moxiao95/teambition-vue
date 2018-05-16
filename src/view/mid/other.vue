@@ -20,11 +20,12 @@
             <h4 class="other-box-title">任务</h4>
         </div>
         <section class="other-child-item clearfix">
-            <ItemTask class="other-item-task"/>
-            <ItemTask class="other-item-task"/>
-            <ItemTask class="other-item-task"/>
-            <ItemTask class="other-item-task"/>
-            <ItemTask class="other-item-task"/>
+            <ItemTask 
+                class="other-item-task"
+                v-for="main in nowItem.list"
+                :key="main.id"
+                :main="main"
+            />
         </section>
   </div>
 </template>
