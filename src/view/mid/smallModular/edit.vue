@@ -25,17 +25,17 @@
             v-model="itemInfo"
         ></Input>
         <Button 
-            type="error" long 
+            type="primary" long 
             class="yes-btn"
             @click="yesChange"
         >确定修改</Button>
         <Button 
-            type="error" long 
+            type="primary" long 
             class="del-btn"
             @click="yesDelete"
         >删除项目</Button>
         <Button 
-            type="error" long 
+            type="primary" long 
             class="can-btn"
             @click.stop="canChange"
         >取消修改</Button>

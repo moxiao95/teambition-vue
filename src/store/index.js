@@ -57,6 +57,20 @@ let store = new Vuex.Store({
             let delItem = state.hasItemData[index];
             state.delItemData.push(delItem);
             state.hasItemData.splice(index,1);
+        },
+        addItemToList(state,params){ // 添加任务下面的小任务
+            let index = state.hasItemData.findIndex(item=>item.id==params.id)
+            state.hasItemData[index].list.push(params.list)
+        },
+        delTaskItem(state,params){ // 删除任务下面对应的小任务
+            let index = state.hasItemData.findIndex(item=>item.id==params.id);
+            let itemIndex = state.hasItemData[index].list.findIndex(item=>item===params.item);
+            state.hasItemData[index].list.splice(itemIndex,1);
+        },
+        changeTaskTitle(state,params){ // 修改任务的title
+            let index = state.hasItemData.findIndex(item=>item.id==params.id);
+            let num = state.hasItemData[index].list.findIndex(item=>item===params.list);
+            state.hasItemData[index].list[num].title = params.title;
         }
     },
     actions:{}

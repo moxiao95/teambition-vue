@@ -1,5 +1,5 @@
 <template>
-  <div class="route-other-box">
+  <div class="route-other-box" @click="disNoneClickBox">
         <div class="other-head">
             <!-- 左侧的导航 -->
             <div class="link-box">
@@ -8,7 +8,7 @@
                         <Icon type="chevron-right"></Icon>
                     </div>
                     <div class="now-btn" @click="showAllItem">
-                        <span>{{nowItem.title}}</span>
+                        <span class="only-text">{{nowItem.title}}</span>
                         <Icon type="chevron-down" size="10"></Icon>
                     </div>
                     <p :class="{'item-is-star':nowItem.star}">
@@ -23,9 +23,34 @@
             <ItemTask 
                 class="other-item-task"
                 v-for="main in nowItem.list"
-                :key="main.id"
-                :main="main"
+                :key="main.title"
+                :list="main"
+                :ids="nowItem.id"
             />
+            <p 
+                class="other-add-item" 
+                @click.stop="addTaskList"
+                v-show="!addBoxShow"
+            >
+                <Icon type="plus-circled" class="other-add-icon" size="30"></Icon>
+                <span class="other-add-btn">新建任务列表</span>
+            </p>
+            <p  
+                v-show="addBoxShow"
+                class="other-to-add"
+            >
+                <Input 
+                    v-model="addListTitle" 
+                    placeholder="新建任务列表" 
+                    style="width: 240px"
+                    class="other-add-input"
+                ></Input>
+                <section class="other-btn-box">
+                    <Button type="primary" class="other-yes-btn" @click.stop="yesToAdd">确定</Button>
+                    <Button type="primary" class="other-no-btn" @click.stop="noToAdd">取消</Button>
+                </section>
+                
+            </p>
         </section>
   </div>
 </template>
@@ -38,17 +63,45 @@ export default{
     },
     data(){
         return {
-            showClickBox: false
+            showClickBox: false,
+            addBoxShow:false,
+            addListTitle:''
         }
     },
     methods:{
         showAllItem(){
             this.showClickBox = !this.showClickBox;
+        },
+        disNoneClickBox(e){
+            if(e.target.className==='only-text'||e.target.className==='ivu-icon ivu-icon-chevron-down')return;
+            this.showClickBox = false;
+        },
+        addTaskList(){
+            this.addBoxShow = true;
+        },
+        noToAdd(){
+            this.addBoxShow = false;
+        },
+        yesToAdd(){
+            this.addBoxShow = false;
+            if(this.addListTitle===''){
+                alert('不能为空')
+                return;
+            };
+            let id = this.$route.query.user;
+            let item = this.$store.state.hasItemData.find(item=>item.id=== +id);
+            console.log(item.list.length)
+            if(item.list.length===5){
+                alert('超过限制，最多创建5个');
+                return;
+            };
+            this.$store.commit('addItemToList',{id:id,list:{title:this.addListTitle,childItem:[]}});
+            this.addListTitle = '';
         }
     },
     computed:{
         nowItem(){
-            let id = this.$route.query.user===[]?1526108914994:this.$route.query.user;
+            let id = this.$route.query.user;
             let item = this.$store.state.hasItemData.find(item=>item.id=== +id);
             return item;
         }
@@ -56,15 +109,51 @@ export default{
 }
 </script>
 <style>
+.other-btn-box{
+    text-align: center;
+}
+.other-add-input{
+    height: 40px;
+    margin: 30px 20px 10px;
+}
+.other-yes-btn,
+.other-no-btn{
+    margin: 0 10px;
+}
+.other-add-btn{
+    float: left;
+    font: 20px/60px "微软雅黑";
+}
+.other-add-icon{
+    float: left;
+    margin: 15px 10px 0 10px;
+}
+.other-add-item{
+    float: left;
+    width: 280px;
+    height: 60px;
+    border-radius: 5px;
+    box-shadow: 2px 3px 3px 3px rgb(165, 165, 165);
+    background-color: rgb(236, 234, 234);
+    cursor: pointer;
+}
+.other-to-add{
+    float: left;
+    width: 280px;
+    height: 145px;
+    border-radius: 5px;
+    box-shadow: 2px 3px 3px 3px rgb(165, 165, 165);
+    background-color: rgb(236, 234, 234);
+}
 .other-item-task{
+    position: relative;
     float: left;
     width: 280px;
     height: 700px;
     border-radius: 5px;
     box-shadow: 2px 3px 3px 3px rgb(165, 165, 165);
     margin-right: 10px;
-    background-color: rgb(236, 234, 234);
-    overflow: auto;
+    background-color: rgb(236, 234, 234, .5);
 }
 .other-box-title{
     font: bold 20px/40px "微软雅黑";
