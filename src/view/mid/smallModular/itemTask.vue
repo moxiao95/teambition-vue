@@ -1,5 +1,6 @@
 <template>
     <section>
+        <!-- 头部区域 -->
         <header class="task-head">
             <span class="task-head-title">{{list.title}}</span>
             <span class="task-head-num">{{list.childItem.length>0?list.childItem.length:''}}</span>
@@ -7,12 +8,14 @@
                 <Icon type="arrow-down-b"></Icon>
             </span>
         </header>
+        <!-- 点击小尖角显示的两个按钮 -->
         <section class="task-chagne-btn" v-show="showChangeBtn">
             <div @click="toEditTaskItem">编辑</div>
             <div @click="toDelTaskItem">删除</div>
         </section>
+        <!-- 点击编辑之后显示的编辑框 -->
         <section class="task-edit-box" v-show="taskEditShow">
-            <header>编辑列表</header>
+            <div>编辑列表</div>
             <span class="task-edit-close" @click="taskEditCancel">
                 <Icon type="ios-close-empty" size="30" ></Icon>
             </span>
@@ -27,20 +30,55 @@
                 <Button type="primary" class="task-edit-btn" @click="taskEditCancel">取消</Button>
             </section>
         </section>
+        <!-- 底下小任务显示 -->
         <ul class="task-item-list">
+            <!-- 已经拥有的项目 -->
             <li 
-                class="task-show-list"
-                v-show="list.childItem.length>0?true:false"
+                class="task-show-list clearfix"
+                v-if="list.childItem.length>0?true:false"
+                v-for="item in childTask"
+                :key="item.title"
             >
-                <div>
-                    <Checkbox v-model="single" size="large" @change="itemChangeCheck">{{list.childItem.title}}</Checkbox>
+                <div class="task-list-details" @click.stop="toChangeItemClick(item)" v-show="!changeTaskItemContent">
+                    <Icon type="ios-circle-outline" size="30" class="task-list-icon" v-show="!item.isClick"></Icon>
+                    <Icon type="ios-checkmark-outline" size="30" class="task-list-icon" v-show="item.isClick"></Icon>
+                    <span class="task-title-color">{{item.title}}</span>
+                    <span class="task-list-set" @click.stop="taskItemEdit">
+                        <Icon type="ios-gear" size="30"></Icon>
+                    </span>
+                </div>
+                <div class="change-item-box" v-show="changeTaskItemContent">
+                    <Input 
+                        :placeholder="item.title" 
+                        style="width: 200px"
+                        class="change-items-inp"
+                        v-model="changeItemValue"
+                    ></Input>
+                    <section class="change-btn-box">
+                        <Button type="primary" class="change-items-btn" @click="changeBtnYes(item)">确定</Button>
+                        <Button type="primary" class="change-items-btn" @click="changeBtnCancel">取消</Button>
+                    </section>
                 </div>
             </li>
-            <li class="task-add-item" @click.stop="addItemTask(list)">
+            <!-- 添加内容 -->
+            <li class="task-add-item" @click.stop="addItemTask" v-show="taskAddShow">
                 <span>
                     <Icon type="plus-circled" size="20"></Icon>
                 </span>
                 <span>添加任务</span>
+            </li>
+            <!-- 点击添加内容按钮显示的添加框 -->
+            <li class="task-to-adds" v-show="!taskAddShow">
+                <Input 
+                    v-model="addItemTitle"
+                    placeholder="任务内容" 
+                    style="width: 220px"
+                    class="task-adds-inp"
+                ></Input>
+                <section>
+                    <Button type="primary" class="task-adds-btn" @click="taskAddYes">确定</Button>
+                    <Button type="primary" class="task-adds-btn" @click="taskAddCancel">取消</Button>
+                </section>
             </li>
         </ul>
     </section>
@@ -52,8 +90,11 @@ export default{
             single:false,
             showChangeBtn:false,
             taskEditShow:false,
-            value:'',
-            itemTitle:this.list.title
+            addItemTitle:'',
+            itemTitle:this.list.title,
+            taskAddShow:true,
+            changeTaskItemContent:false,
+            changeItemValue:''
         }
     },
     props:['list','ids'],
@@ -63,8 +104,38 @@ export default{
         }
     },
     methods:{
-        addItemTask(list){
-            console.log(this.$route.query.user,list)
+        toChangeItemClick(item){
+            let id = this.$route.query.user;
+            this.$store.commit('toChangeItemClick',{id:id,list:this.list,item:item})
+        },
+        changeBtnYes(item){
+            if(this.changeItemValue===''){
+                alert('不能为空')
+            }else{
+                let id = this.$route.query.user;
+                let changeItemValue = this.changeItemValue.trim();
+                this.$store.commit('changeTaskListTitle',{id:id,list:this.list,title:changeItemValue,item:item})
+            }
+            this.changeTaskItemContent = false;
+        },
+        taskItemEdit(){
+            this.changeTaskItemContent = true;
+        },
+        changeBtnCancel(){
+            this.changeTaskItemContent = false;
+        },
+        addItemTask(){
+            this.taskAddShow = !this.taskAddShow;
+        },
+        taskAddCancel(){
+            this.taskAddShow = !this.taskAddShow;
+        },
+        taskAddYes(){
+            if(this.addItemTitle!==''){
+                let id = this.$route.query.user;
+                this.$store.commit('taskToAddItem',{id:id,list:this.list,content:{title:this.addItemTitle,isClick:false}})
+            }
+            this.taskAddShow = !this.taskAddShow;
         },
         itemChangeCheck(){
             console.log(this.single)
@@ -90,6 +161,23 @@ export default{
 }
 </script>
 <style>
+.task-adds-inp{
+    margin: 10px 20px;
+}
+.task-adds-btn{
+    width: 90px;
+    margin: 5px 10px;
+}
+.task-to-adds{
+    width: 260px;
+    height: 100px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 1px 1px 1px 1px rgb(192, 190, 190);
+}
+.task-to-adds>section{
+    text-align: center;
+}
 .task-edit-box{
     position: absolute;
     top: 30px;
@@ -109,7 +197,7 @@ export default{
     padding: 0 10px;
     cursor: pointer;
 }
-.task-edit-box>header{
+.task-edit-box>div{
     font: 18px/30px "微软雅黑";
 }
 .task-edit-inp{
@@ -136,7 +224,7 @@ export default{
 }
 .task-chagne-btn>div:hover{
     background-color: rgb(221, 221, 221);
-    color: #000;;
+    color: #000;
 }
 .task-item-list .task-add-item{
     float: none;
@@ -163,16 +251,48 @@ export default{
     margin: 0 auto;
 }
 .task-item-list .task-show-list{
-    height: 50px;
     border-radius: 6px;
     background-color: #fff;
     box-shadow: 1px 1px 1px 1px rgb(221, 221, 221);
     margin-bottom: 5px;
+    cursor: pointer;
+    padding-bottom: 10px;
 }
-.task-item-list .task-show-list div{
-    height: 20px;
-    padding: 15px 0 0 40px;
-    word-spacing: 20px;
+.task-item-list .task-show-list .change-item-box{
+    width: 240px;
+    margin: 0 10px;
+}
+.task-show-list .change-item-box .change-btn-box{
+    width: 200px;
+    text-align: center;
+}
+.change-item-box .change-btn-box .change-items-btn{
+    margin: 0 10px;
+}
+.task-show-list .change-item-box .change-items-inp{
+    margin-bottom: 7px;   
+}
+.task-item-list .task-show-list .task-list-set{
+    float: right;
+    padding: 0 10px;
+    height: 30px;
+    color: rgb(37, 37, 37, .7);
+}
+.task-item-list .task-show-list .task-title-color{
+    font: 20px/30px "微软雅黑";
+    color: #000;
+}
+.task-item-list .task-show-list>div{
+    float: left;
+    width: 230px;
+    padding: 10px 0 0 20px;
+    font: 20px/30px "微软雅黑";
+}
+.task-item-list .task-show-list>div>span{
+    margin-left: 40px;
+}
+.task-item-list .task-show-list>div .task-list-icon{
+    position: absolute;
 }
 .task-head{
     height: 50px;
@@ -192,5 +312,10 @@ export default{
     float: left;
     padding: 0 10px;
     color: rgb(140, 153, 163);
+}
+.clearfix:after{
+    content: '';
+    display:block;
+    clear: both;
 }
 </style>

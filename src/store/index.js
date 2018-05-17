@@ -71,6 +71,24 @@ let store = new Vuex.Store({
             let index = state.hasItemData.findIndex(item=>item.id==params.id);
             let num = state.hasItemData[index].list.findIndex(item=>item===params.list);
             state.hasItemData[index].list[num].title = params.title;
+        },
+        taskToAddItem(state,params){ // 添加任务内容
+            let index = state.hasItemData.findIndex(item=>item.id==params.id);
+            let itemIndex = state.hasItemData[index].list.findIndex(item=>item===params.list);
+            state.hasItemData[index].list[itemIndex].childItem.push(params.content)
+            console.log(state.hasItemData[index].list[itemIndex].childItem)
+        },
+        toChangeItemClick(state,params){ // 修改任务内容
+            let index = state.hasItemData.findIndex(item=>item.id==params.id);
+            let itemIndex = state.hasItemData[index].list.findIndex(item=>item===params.list);
+            let childNum = state.hasItemData[index].list[itemIndex].childItem.findIndex(item=>item===params.item);
+            state.hasItemData[index].list[itemIndex].childItem[childNum].isClick = !state.hasItemData[index].list[itemIndex].childItem[childNum].isClick;
+        },
+        changeTaskListTitle(state,params){ // 修改任务内容的title
+            let index = state.hasItemData.findIndex(item=>item.id==params.id);
+            let itemIndex = state.hasItemData[index].list.findIndex(item=>item===params.list);
+            let childNum = state.hasItemData[index].list[itemIndex].childItem.findIndex(item=>item===params.item);
+            state.hasItemData[index].list[itemIndex].childItem[childNum].title = params.title;
         }
     },
     actions:{}
