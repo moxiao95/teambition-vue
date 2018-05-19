@@ -27,12 +27,20 @@
                     class="to-search"
                     v-show="showTask"
                 >
-                    <router-link 
-                        v-for="item in sBtnData"
-                        :key="item.num"
-                        :to="{name:'defa'}"
+                    <!-- <router-link 
+                        v-for="item in allItems"
+                        :key="item.id"
+                        :to="{name:'other',query:{user:item.id}}"
                         tag="div"
-                    >{{item.title}}</router-link>
+                        @click="lll"
+                    >{{item.title}}</router-link> -->
+                    <div 
+                        class="head-item-list"
+                        v-for="item in allItems"
+                        :key="item.id"
+                        @click="lll(item.id)"
+                    >{{item.title}}</div>
+
                 </div>
                 <!-- 点击添加图标显示的内容 -->
                 <div 
@@ -50,13 +58,14 @@
             >imitate-teambition-by-vue</router-link>
             <!-- 右侧分类 -->
             <div class="layout-nav fr">
-                <MenuItem 
+                <!-- <MenuItem 
                     v-for="item in Menu"
                     :key="item.num"
                     name="{item.num}"
                 >
                     <router-link to="/" tag="span">{{item.name}}</router-link>
-                </MenuItem>
+                </MenuItem> -->
+                <span class="head-out-btn" @click="outLogin">退出</span>
             </div>
         </Menu>
     </Header>
@@ -124,18 +133,35 @@ export default {
             this.showTask = true;
             this.$store.commit('changeHeadBtn',{bl:false});
         },
-        inpBlur(){
+        inpBlur(e){
+            console.log(e)
             this.showTask = false;
+        },
+        outLogin(){
+            console.log(123)
+        },
+        lll(id){
+            this.showTask = false;
+            this.$router.push({name:'other',query:{user:id}})
+            console.log(123)
         }
     },
     computed:{
         showAddBtn(){
             return this.$store.state.headItemAdd;
+        },
+        allItems(){
+            return this.$store.state.hasItemData;
         }
     }
 }
 </script>
 <style scoped>
+.head-out-btn{
+    color: #fff;
+    font: 20px/60px "微软雅黑";
+    cursor: pointer;
+}
 .mr-bot{
     height: 64px;
     position: relative;

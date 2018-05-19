@@ -2,17 +2,25 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
 
+// 这是从本地localStorage中拿到数据
 let datas = JSON.parse(localStorage.getItem('team-list')) || [];
 let delDatas = JSON.parse(localStorage.getItem('del-list')) || [];
 //组件之间通信数据
 let store = new Vuex.Store({
     state:{
+        // 显示用户拥有的项目数组
         hasItemData:datas,
+        // 用户删除的项目数组
         delItemData:delDatas,
+        // 控制头部天机按钮的状态
         headItemAdd:false,
+        // 添加项目的弹框的状态
         showAddBtn:false,
+        // 遮罩层的状态
         showZIndexBox:false,
+        // 改变信息的弹框的状态
         showChangeBox:false,
+        // 存放想要修改的项目，这是一个对象
         wantChangeItem:{}
     },
     mutations:{
