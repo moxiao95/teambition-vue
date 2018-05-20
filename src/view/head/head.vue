@@ -27,6 +27,12 @@
                     class="to-search"
                     v-show="showTask"
                 >
+                    <div 
+                        class="head-item-list"
+                        v-for="item in allItems"
+                        :key="item.id"
+                        @click="lll(item.id)"
+                    >{{item.title}}</div>
                     <!-- <router-link 
                         v-for="item in allItems"
                         :key="item.id"
@@ -34,13 +40,6 @@
                         tag="div"
                         @click="lll"
                     >{{item.title}}</router-link> -->
-                    <div 
-                        class="head-item-list"
-                        v-for="item in allItems"
-                        :key="item.id"
-                        @click="lll(item.id)"
-                    >{{item.title}}</div>
-
                 </div>
                 <!-- 点击添加图标显示的内容 -->
                 <div 
