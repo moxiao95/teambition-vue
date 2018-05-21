@@ -65,7 +65,7 @@ export default{
             this.$store.commit('disAddBox',{bl:false});
             this.$store.commit('addBtnShow',{bl:false});
         },
-        addItems(){
+        addItems(){ // 添加项目
             let title = this.title.trim();
             let info = this.info.trim();
             let id = Math.random() + Date.now();

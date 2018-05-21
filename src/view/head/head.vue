@@ -31,14 +31,13 @@
                         class="head-item-list"
                         v-for="item in allItems"
                         :key="item.id"
-                        @click="lll(item.id)"
+                        @click="clickRoutePush(item.id)"
                     >{{item.title}}</div>
                     <!-- <router-link 
                         v-for="item in allItems"
                         :key="item.id"
                         :to="{name:'other',query:{user:item.id}}"
                         tag="div"
-                        @click="lll"
                     >{{item.title}}</router-link> -->
                 </div>
                 <!-- 点击添加图标显示的内容 -->
@@ -133,13 +132,13 @@ export default {
             this.$store.commit('changeHeadBtn',{bl:false});
         },
         inpBlur(e){
-            console.log(e)
-            this.showTask = false;
+            // console.log(e)
+            // this.showTask = false;
         },
         outLogin(){
             console.log(123)
         },
-        lll(id){
+        clickRoutePush(id){
             this.showTask = false;
             this.$router.push({name:'other',query:{user:id}})
             console.log(123)

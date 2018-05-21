@@ -97,6 +97,12 @@ let store = new Vuex.Store({
             let itemIndex = state.hasItemData[index].list.findIndex(item=>item===params.list);
             let childNum = state.hasItemData[index].list[itemIndex].childItem.findIndex(item=>item===params.item);
             state.hasItemData[index].list[itemIndex].childItem[childNum].title = params.title;
+        },
+        itemChangeState(state,params){ // 修改点击set图标之后对应的显示状态
+            let index = state.hasItemData.findIndex(item=>item.id==params.id);
+            let itemIndex = state.hasItemData[index].list.findIndex(item=>item===params.list);
+            let childNum = state.hasItemData[index].list[itemIndex].childItem.findIndex(item=>item===params.item);
+            state.hasItemData[index].list[itemIndex].childItem[childNum].isChange = params.bl;
         }
     },
     actions:{}

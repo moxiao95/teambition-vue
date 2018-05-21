@@ -20,6 +20,7 @@
             <h4 class="other-box-title">任务</h4>
         </div>
         <section class="other-child-item clearfix">
+            <!-- 所有的项目子内容显示 -->
             <ItemTask 
                 class="other-item-task"
                 v-for="main in nowItem.list"
@@ -27,6 +28,7 @@
                 :list="main"
                 :ids="nowItem.id"
             />
+            <!-- 点击之后显示添加新的子任务的框 -->
             <p 
                 class="other-add-item" 
                 @click.stop="addTaskList"
@@ -35,6 +37,7 @@
                 <Icon type="plus-circled" class="other-add-icon" size="30"></Icon>
                 <span class="other-add-btn">新建任务列表</span>
             </p>
+            <!-- 新的子任务的添加区 -->
             <p  
                 v-show="addBoxShow"
                 class="other-to-add"
@@ -69,20 +72,20 @@ export default{
         }
     },
     methods:{
-        showAllItem(){
+        showAllItem(){ // 点击之后显示出来所有的任务，并且标记当前所处的任务
             this.showClickBox = !this.showClickBox;
         },
-        disNoneClickBox(e){
+        disNoneClickBox(e){ // 点击之后不是在当前的routelink上面就消失
             if(e.target.className==='only-text'||e.target.className==='ivu-icon ivu-icon-chevron-down')return;
             this.showClickBox = false;
         },
-        addTaskList(){
+        addTaskList(){ // 点击之后显示添加子内容的框
             this.addBoxShow = true;
         },
-        noToAdd(){
+        noToAdd(){ // 点击之后添加子内容的框消失
             this.addBoxShow = false;
         },
-        yesToAdd(){
+        yesToAdd(){ // 确定添加子内容
             this.addBoxShow = false;
             if(this.addListTitle===''){
                 alert('不能为空')
@@ -100,7 +103,7 @@ export default{
         }
     },
     computed:{
-        nowItem(){
+        nowItem(){ // 显示当前所处项目里面的内容
             let id = this.$route.query.user;
             let item = this.$store.state.hasItemData.find(item=>item.id=== +id);
             return item;

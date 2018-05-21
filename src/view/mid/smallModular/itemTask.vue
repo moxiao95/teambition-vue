@@ -39,15 +39,15 @@
                 v-for="item in childTask"
                 :key="item.title"
             >
-                <div class="task-list-details" @click.stop="toChangeItemClick(item)" v-show="!changeTaskItemContent">
+                <div class="task-list-details" @click.stop="toChangeItemClick(item)" v-show="!item.isChange">
                     <Icon type="ios-circle-outline" size="30" class="task-list-icon" v-show="!item.isClick"></Icon>
                     <Icon type="ios-checkmark-outline" size="30" class="task-list-icon" v-show="item.isClick"></Icon>
                     <span class="task-title-color">{{item.title}}</span>
-                    <span class="task-list-set" @click.stop="taskItemEdit">
+                    <span class="task-list-set" @click.stop="taskItemEdit(item,true)">
                         <Icon type="ios-gear" size="30"></Icon>
                     </span>
                 </div>
-                <div class="change-item-box" v-show="changeTaskItemContent">
+                <div class="change-item-box" v-show="item.isChange">
                     <Input 
                         :placeholder="item.title" 
                         style="width: 200px"
@@ -56,7 +56,7 @@
                     ></Input>
                     <section class="change-btn-box">
                         <Button type="primary" class="change-items-btn" @click="changeBtnYes(item)">确定</Button>
-                        <Button type="primary" class="change-items-btn" @click="changeBtnCancel">取消</Button>
+                        <Button type="primary" class="change-items-btn" @click="taskItemEdit(item,false)">取消</Button>
                     </section>
                 </div>
             </li>
@@ -99,41 +99,41 @@ export default{
     },
     props:['list','ids'],
     computed:{
-        childTask(){
+        childTask(){ // 当前子任务的所有的子内容
             return this.list.childItem
         }
     },
     methods:{
-        toChangeItemClick(item){
+        toChangeItemClick(item){ // 修改子内容的勾选状态
             let id = this.$route.query.user;
             this.$store.commit('toChangeItemClick',{id:id,list:this.list,item:item})
         },
-        changeBtnYes(item){
+        changeBtnYes(item){ // 用来改变想要改变的子内容的title
+            let id = this.$route.query.user;
             if(this.changeItemValue===''){
                 alert('不能为空')
             }else{
-                let id = this.$route.query.user;
                 let changeItemValue = this.changeItemValue.trim();
-                this.$store.commit('changeTaskListTitle',{id:id,list:this.list,title:changeItemValue,item:item})
+                this.$store.commit('changeTaskListTitle',{id:id,list:this.list,title:changeItemValue,item:item});
+                this.changeItemValue = '';
             }
-            this.changeTaskItemContent = false;
+            this.$store.commit('itemChangeState',{id:id,item:item,list:this.list,bl:false})
         },
-        taskItemEdit(){
-            this.changeTaskItemContent = true;
+        taskItemEdit(item,bl){ // 点击set图标改变显示状态
+            let id = this.$route.query.user;
+            this.$store.commit('itemChangeState',{id:id,item:item,list:this.list,bl:bl})
         },
-        changeBtnCancel(){
-            this.changeTaskItemContent = false;
-        },
-        addItemTask(){
+        addItemTask(){ // 点击添加按钮之后显示子内容添加栏
             this.taskAddShow = !this.taskAddShow;
         },
-        taskAddCancel(){
+        taskAddCancel(){ // 点击添加按钮之后关闭子内容添加栏
             this.taskAddShow = !this.taskAddShow;
         },
-        taskAddYes(){
+        taskAddYes(){ // 确定添加一个新的子内容
             if(this.addItemTitle!==''){
                 let id = this.$route.query.user;
-                this.$store.commit('taskToAddItem',{id:id,list:this.list,content:{title:this.addItemTitle,isClick:false}})
+                this.$store.commit('taskToAddItem',{id:id,list:this.list,content:{title:this.addItemTitle,isClick:false,isChange:false}});
+                this.addItemTitle = '';
             }
             this.taskAddShow = !this.taskAddShow;
         },
@@ -267,7 +267,12 @@ export default{
     text-align: center;
 }
 .change-item-box .change-btn-box .change-items-btn{
+    padding: 0 10px;
+    font: 16px/40px "微软雅黑";
     margin: 0 10px;
+}
+.change-item-box .change-btn-box .change-items-btn span{
+    font: 16px/40px "微软雅黑";
 }
 .task-show-list .change-item-box .change-items-inp{
     margin-bottom: 7px;   
