@@ -72,6 +72,7 @@
 <script>
 import {Menu} from './headMenuData';
 import Item from "./item";
+import Cookies from 'js-cookie';
 let sBtnData = [
     {
         title:'近期完成的任务',
@@ -136,7 +137,8 @@ export default {
             // this.showTask = false;
         },
         outLogin(){
-            console.log(123)
+            Cookies.remove('teambitionVue');
+            this.$router.push({path:'/'})
         },
         clickRoutePush(id){
             this.showTask = false;

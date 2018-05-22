@@ -110,9 +110,7 @@ export default{
         },
         changeBtnYes(item){ // 用来改变想要改变的子内容的title
             let id = this.$route.query.user;
-            if(this.changeItemValue===''){
-                alert('不能为空')
-            }else{
+            if(this.changeItemValue!==''){
                 let changeItemValue = this.changeItemValue.trim();
                 this.$store.commit('changeTaskListTitle',{id:id,list:this.list,title:changeItemValue,item:item});
                 this.changeItemValue = '';

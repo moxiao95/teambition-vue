@@ -3,6 +3,7 @@ import Router from 'vue-router';
 Vue.use(Router);
 
 // 引入组件
+import login from '@/view/login'
 import defa from '@/view/mid/defa';
 import other from '@/view/mid/other';
 
@@ -10,6 +11,11 @@ import other from '@/view/mid/other';
 let routes = [
   {
     path:'/',
+    name:'login',
+    component:login
+  },
+  {
+    path:'/defa',
     name:'defa',
     component:defa
   },
