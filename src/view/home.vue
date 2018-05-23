@@ -21,6 +21,7 @@ export default {
         return {
             // 这里的两个数组，是用来向localStorage中存储的，一旦有变化，就存进去
             list:this.$store.state.hasItemData,
+            // 这是删除的东西
             delList:this.$store.state.delItemData
         }
     },
