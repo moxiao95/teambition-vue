@@ -4,6 +4,7 @@ Vue.use(Vuex);
 
 // 这是从本地localStorage中拿到数据
 let datas = JSON.parse(localStorage.getItem('team-list')) || [];
+// 这是从本地localStorage中拿到的删除的数据
 let delDatas = JSON.parse(localStorage.getItem('del-list')) || [];
 //组件之间通信数据
 let store = new Vuex.Store({
