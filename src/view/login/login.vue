@@ -3,26 +3,16 @@
     <section class="login-box">
         <header class="login-head">teambition-by-vue</header>
         <section class="login-mid">
-            <dl class="user-inp">
-                <dt class="user-text">用户名：</dt>
-                <dd class="user-to-inp">
-                    <Input 
-                        class="text-input"
-                        v-model="userName" 
-                        placeholder="请输入用户名" 
-                    />
-                </dd>
-            </dl>
-            <dl class="user-inp">
-                <dt class="user-text">密码：</dt>
-                <dd class="user-to-inp">
-                    <Input 
-                        class="text-input"
-                        v-model="passWord" 
-                        placeholder="请输入用户密码" 
-                    />
-                </dd>
-            </dl>
+            <Input 
+                class="text-input"
+                v-model="userName" 
+                placeholder="请输入用户名" 
+            />
+            <Input 
+                class="text-input"
+                v-model="passWord" 
+                placeholder="请输入用户密码" 
+            />
         </section>
         <footer class="login-foot">
             <Button 
@@ -41,7 +31,7 @@
 </section>
 </template>
 <script>
-import {Login,Sign} from '@/server/index.js';
+import {Sign} from '@/server/index.js';
 import Cookies from 'js-cookie';
 export default{
     data(){
@@ -49,24 +39,17 @@ export default{
             userName: '',
             passWord: '',
             remindShow: false,
-            remindText:'错误'
+            remindText:''
         }
     },
     methods:{
         loginBtn(){
             if(this.userName!==''&&this.passWord!==''){
-                let user = {
-                    method: 'post',
-                    url: 'http://localhost:8000/login',
-                    data:{
-                        userName:this.userName,
-                        passWord:this.passWord 
-                    }
-                }
-                Login(user).then(({data})=>{
+                this.http.postLogin({userName:this.userName,passWord:this.passWord}).then(({data})=>{
                     if(data.success){
-                        this.$router.push({name:'defa'});
-                        Cookies.set('teambitionVue','123');
+                        this.$router.push({path:'/task'});
+                        Cookies.set('teamVue','123','1');
+                        localStorage.setItem('userId',JSON.stringify(data.doc._id));
                     }else{
                         this.remindShow = true;
                         this.remindText = '用户名或者密码错误';
@@ -89,16 +72,8 @@ export default{
         },
         registerBtn(){
             if(this.userName!==''&&this.passWord!==''){
-                let user = {
-                    method: 'post',
-                    url: 'http://localhost:8000/user',
-                    data:{
-                        userName:this.userName,
-                        passWord:this.passWord 
-                    }
-                }
-                Sign(user).then(({data})=>{
-                    console.log(data.doc)
+                this.http.postSign({userName:this.userName,passWord:this.passWord}).then(({data})=>{
+                    console.log(123)
                     if(data.success){
                         this.remindShow = true;
                         this.remindText = '注册成功';
@@ -128,9 +103,8 @@ export default{
         }
     },
     created(){
-        console.log(Cookies.get('teambitionVue'))
-        if(Cookies.get('teambitionVue')){
-            this.$router.push({name:'defa'});
+        if(Cookies.get('teamVue')){
+            this.$router.push({path:'/task'});
         }
     }
 }
@@ -150,35 +124,20 @@ export default{
 }
 .login-btn,
 .register-btn{
-    width: 100px;
+    width: 400px;
     height: 50px;
     padding: 0 15px;
     font: 20px/50px "微软雅黑";
-    margin: 0 25px;
-}
-.user-text{
-    float: left;
-    margin-left: 60px;
-    text-align: right;
-    height: 50px;
-    font: 24px/50px "微软雅黑";
-}
-.user-to-inp{
-    float: right;
-    height: 50px;
-    margin-right: 60px;
+    margin: 5px 25px;
 }
 .text-input{
-    width: 300px;
+    width: 400px;
     height: 50px;
+    margin: 0 50px;
 }
 .text-input input{
     margin-top: 5px;
     height: 40px;
-}
-.user-inp{
-    height: 80px;
-    padding: 0 20px;
 }
 .team-login{
     position: fixed;
@@ -188,8 +147,8 @@ export default{
     z-index: 999;
 }
 .login-box{
-    width: 600px;
-    height: 400px;
+    width: 500px;
+    height: 360px;
     position: absolute;
     top: 20%;
     left: 50%;
@@ -201,7 +160,7 @@ export default{
 .login-head{
     height: 60px;
     color: #fff;
-    background-color: rgb(48, 48, 252, .8);
+    background-color: rgba(96, 96, 248, 0.8);
     border-radius: 10px 10px 0 0;
     text-align: center;
     font: 30px/60px "微软雅黑";

@@ -2,33 +2,35 @@ import Vue from 'vue';
 import Router from 'vue-router';
 Vue.use(Router);
 
-// 引入组件
-import login from '@/view/login'
-import defa from '@/view/mid/defa';
-import other from '@/view/mid/other';
+import login from '@/view/login/login';
+import task from '@/view/main/task';
+import childTask from '@/view/main/childTask/childTask';
+import otherTask from '@/view/main/childTask/otherTask';
 
-// 定义路由
 let routes = [
-  {
-    path:'/',
-    name:'login',
-    component:login
-  },
-  {
-    path:'/defa',
-    name:'defa',
-    component:defa
-  },
-  {
-    path:'/other',
-    name:'other',
-    component:other
-  }
+    {
+        path:'/',
+        name: 'login',
+        component:login
+    },
+    {
+        path:'/task',
+        component:task,
+        children:[
+            {
+                path:'',
+                name:'childTask',
+                component: childTask
+            },
+            {
+                path:'otherTask',
+                name:'otherTask',
+                component:otherTask
+            }
+        ]
+    }
 ]
-
-// 暴露出去路由
 export default new Router({
-  // 使用history模式
-  mode:'history',
-  routes
+    mode:'history',
+    routes
 })

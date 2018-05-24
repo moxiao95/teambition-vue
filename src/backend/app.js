@@ -5,15 +5,10 @@ let mongoose = require('./db');
 // 引入bodyParser插件
 let bodyParser = require('body-parser');
 
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-app.get('/',(req,res)=>{
-    console.log('有人来了')
-})
-
-
-
+// 端口
 app.listen(8000,()=>{
     console.log('服务启动')
 })
@@ -50,23 +45,55 @@ let itemSchema = new Schema({
 // 使用注册好的具体信息的规则
 let Item = mongoose.model('Item',itemSchema,'userItem');
 
-let userItem = []
 
-app.post('/user',function(req,res){
+// 星标设置
+app.post('/star',function(req,res){
+    
+})
+
+// 创建新任务
+app.post('/creat',function(req,res){
+    let {id,title,info} = req.body;
+    Item.create({userId:id,itemTitle:title,itemInfo:info,itemStar:false,itemDel:false},function(err,doc){
+        if(doc){
+            console.log('子内容成功了')
+            res.send({doc:doc})
+        }
+    })
+})
+
+// 用户所有的子项目
+app.get('/item',function(req,res){
+    Item.find({userId:req.query.userId},function(err,doc){
+        if(doc){
+            res.send({doc:doc})
+        }else{
+            console.log(400)
+        }
+    })
+})
+
+// 注册用户
+app.post('/sign',function(req,res){
     User.findOne({userName:req.body.userName},function(err,doc){
         if(doc){
             res.send({success:false});
         }else{
             User.create({userName:req.body.userName,passWord:req.body.passWord},function(err,doc){
                 if(doc){
-                    console.log(doc)
                     res.send({success:true,doc:doc});
-                    User.cerate()
+                    Item.create({userId:doc.id,itemTitle:'默认项目1',itemInfo:'默认简介',itemStar:false,itemDel:false},function(err,doc){
+                        if(doc){
+                            console.log('子内容成功了')
+                        }
+                    })
                 }
             })
         }
     })
 })
+
+// 登录验证
 app.post('/login',function(req,res){
     User.findOne({userName:req.body.userName,passWord:req.body.passWord},function(err,doc){
         if(doc){
