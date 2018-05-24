@@ -37,7 +37,7 @@ let store = new Vuex.Store({
         disAddBox(state,params){ //显示遮罩层
             state.showZIndexBox = params.bl;
         },
-        toStar(state,params){ // 收藏
+        toStar(state,params){ // 点击收藏
             let index = state.hasItemData.findIndex(item=>item===params);
             state.hasItemData[index].star = !state.hasItemData[index].star;
         },
