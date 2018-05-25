@@ -1,11 +1,18 @@
 <template>
 <section class="other-task-box">
-    other
-    <router-link :to="{path:'/task'}">2323132313</router-link>
+    <OtherHead />
 </section>
 </template>
 <script>
-    
+import OtherHead from '@/view/main/childTask/otherTaskItem/otherHead';
+export default{
+    components:{
+        OtherHead
+    },
+    created(){
+        // console.log(this.$route.query)
+    }
+}
 </script>
 <style>
 .other-task-box{

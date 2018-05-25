@@ -73,7 +73,6 @@ export default{
         registerBtn(){
             if(this.userName!==''&&this.passWord!==''){
                 this.http.postSign({userName:this.userName,passWord:this.passWord}).then(({data})=>{
-                    console.log(123)
                     if(data.success){
                         this.remindShow = true;
                         this.remindText = '注册成功';

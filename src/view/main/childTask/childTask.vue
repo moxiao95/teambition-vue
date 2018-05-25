@@ -4,13 +4,14 @@
         <!-- 星标 -->
         <div class="child-item-text" v-show="this.starItem.length>0?true:false">星标项目</div>
         <ul class="child-item-star clearfix" v-show="this.starItem.length>0?true:false">
-            <Li />
+            <!-- 这是所有的星标项目 -->
+            <Li v-for="user in starItem" :item="user" :key="user._id"/>
         </ul>
         <!-- 我的 -->
         <div class="child-item-text">我的项目</div>
         <ul class="child-item-box clearfix">
             <!-- 已有 -->
-            <Li v-for="user in allItem" :item="user" :key="user._id"/>
+            <Li v-for="item in allItem" :item="item" :key="item._id"/>
             <!-- 创建 -->
             <li class="add-user-item" @click.stop="addUserItem">
                 <div class="add-user-img">
@@ -26,23 +27,26 @@
             <span v-show="delShow" @click.stop="delItemShow">隐藏</span>
         </div>
         <ul class="child-item-del clearfix" v-show="delShow">
-            <DelLi />
+            <DelLi v-for="item in delItem" :item="item" :key="item._id"/>
         </ul>
     </section>
     <!-- 添加框 -->
     <Add v-show="addShow"/>
+    <!-- 修改信息框 -->
+    <Edit v-if="editShow"/>
     <!-- 遮罩层 -->
-    <section class="child-mask" v-show="maskShow"></section>
+    <section class="child-mask" v-if="maskShow"></section>
 </section>
 </template>
 <script>
 import Li from '@/view/main/childTask/childTaskItem/childTaskItem'
 import DelLi from '@/view/main/childTask/childTaskItem/childTaskItemDel'
 import Add from '@/view/main/childTask/samllItem/addUserItem'
+import Edit from '@/view/main/childTask/samllItem/editUserItem'
 import {get} from '@/server/index.js';
 export default{
     components:{
-        Li,DelLi,Add
+        Li,DelLi,Add,Edit
     },
     data(){
         return {
@@ -50,23 +54,27 @@ export default{
         }
     },
     computed:{
-        starItem(){
+        starItem(){ // 所有星标项目
             return this.$store.state.allData.filter(item=>item.itemStar)
         },
-        delItem(){
+        delItem(){ // 所有删除的项目
             return this.$store.state.allData.filter(item=>item.itemDel)
         },
-        allItem(){
+        allItem(){ // 所有的未删除项目
             return this.$store.state.allData.filter(item=>!item.itemDel)
         },
-        maskShow(){
+        maskShow(){ // 遮罩层显示
             return this.$store.state.childMaskShow;
         },
-        addShow(){
+        addShow(){ // 添加框的显示
             return this.$store.state.childAddShow;
+        },
+        editShow(){ // 修改框显示
+            return this.$store.state.childEditShow;
         }
     },
     created(){
+        // 现获取到当前的用户所有的任务
         let id = JSON.parse(localStorage.getItem('userId'));
         this.http.getItem({userId:id}).then(({data})=>{
             let list = [...data.doc];
@@ -74,15 +82,11 @@ export default{
         })
     },
     methods:{
-        getItem(){
-            
-        },
         addUserItem(){  // 点击添加新项目，添加框显示，遮罩显示
-            this.$store.commit('addShow',{bl:true})
-            this.$store.commit('maskShow',{bl:true})
+            this.$store.commit('addShow',{bl:true});
+            this.$store.commit('maskShow',{bl:true});
         },
-        delItemShow(){
-            console.log(123)
+        delItemShow(){ // 项目回收站旁边的文字显示
             this.delShow = !this.delShow;
         }
     }

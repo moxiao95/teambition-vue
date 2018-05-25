@@ -31,6 +31,22 @@ function postStar(params){
     return tb.post('/star',params);
 }
 
+// 删除设置 
+function postDel(params){
+    return tb.post('/delete',params)
+}
+
+// 项目信息设置
+function postModify(params){
+    return tb.post('/modify',params)
+}
+
+// 彻底删除设置
+function postThorough(params){
+    return tb.post('/thorough',params)
+}
+
+
 export default{
     install(Vue){
         Vue.prototype.http = {
@@ -38,7 +54,10 @@ export default{
             postSign,
             getItem,
             postCreat,
-            postStar
+            postStar,
+            postDel,
+            postModify,
+            postThorough
         }
     }
 }

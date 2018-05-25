@@ -33,6 +33,7 @@ export default{
     color: #fff;
     background-color: rgb(183, 183, 250);
     font: 20px/50px "微软雅黑";
+    box-shadow: 0px 1px 1px 1px rgb(204, 228, 252);
 }
 .task-head-title{
     width: 300px;

@@ -1,5 +1,5 @@
 <template>
-<li>
+<li @click="toOtherTask">
     <p class="child-item-title">{{item.itemTitle}}</p>
     <p class="child-item-info">{{item.itemInfo}}</p>
     <span class="child-star-item" @click.stop="clickToStar">
@@ -16,7 +16,7 @@
 <script>
 export default{
     props:{
-        item:{
+        item:{ // 默认的标题，因为开始的时候是没有内容的，会报错，添加默认防止报错
             type:Object,
             default(){
                 return {
@@ -33,15 +33,25 @@ export default{
         }
     },
     methods:{
-        clickToStar(){
-            console.log(this.item)
+        clickToStar(){ // 这是点击星标的事件，点亮或取消
+            this.http.postStar({id:this.item._id,bl:!this.item.itemStar}).then(({data})=>{
+                if(data.success){
+                    let id = JSON.parse(localStorage.getItem('userId'));
+                    this.http.getItem({userId:id}).then(({data})=>{
+                        let list = [...data.doc];
+                        this.$store.commit('getAllData',{list});
+                    })
+                }
+            })
         },
-        clickToEdit(){
-            console.log(123)
+        clickToEdit(){ // 修改框和遮罩层显示
+            this.$store.commit('wantChangeItem',{item:this.item});
+            this.$store.commit('maskShow',{bl:true});
+            this.$store.commit('editShow',{bl:true});
         },
-    },
-    created(){
-        console.log(this.item)
+        toOtherTask(){ // 这是路由跳转
+            this.$router.push({name:'otherTask',query:{itemId:this.item._id}});
+        }
     }
 } 
 </script>
