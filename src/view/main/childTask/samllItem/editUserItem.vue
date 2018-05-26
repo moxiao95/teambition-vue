@@ -46,7 +46,8 @@ export default{
     data(){
         return {
             title:'',
-            info:''
+            info:'',
+            bl:false
         }
     },
     methods:{
@@ -55,15 +56,29 @@ export default{
             this.$store.commit('editShow',{bl:false});
         },
         yesChange(){ // 修改用户任务
-            let id = this.$store.state.childWantChange._id;
+            let id = null;
+            if(this.bl){
+                id = this.$store.state.childWantChange._id;
+            }else{
+                id = this.$route.query.itemId;
+            }
             if(this.title!==''){
                 this.http.postModify({id:id,title:this.title,info:this.info}).then(({data})=>{
                     if(data.success){
-                        let id = JSON.parse(localStorage.getItem('userId'));
-                        this.http.getItem({userId:id}).then(({data})=>{
-                            let list = [...data.doc];
-                            this.$store.commit('getAllData',{list});
-                        })
+                        if(this.bl){
+                            let id = JSON.parse(localStorage.getItem('userId'));
+                            this.http.getItem({userId:id}).then(({data})=>{
+                                let list = [...data.doc];
+                                this.$store.commit('getAllData',{list});
+                            })
+                        }else{
+                            this.http.getFindone({id:id}).then(({data})=>{
+                                if(data.success){
+                                    // 当前所在任务
+                                    this.$store.commit('changeHeadTitle',{item:data.doc});
+                                }
+                            })
+                        }
                     }
                 })
             }
@@ -71,7 +86,12 @@ export default{
             this.$store.commit('editShow',{bl:false});
         },
         yesDelete(){ // 删除用户任务
-            let id = this.$store.state.childWantChange._id;
+            let id = null;
+            if(this.bl){
+                id = this.$store.state.childWantChange._id;
+            }else{
+                id = this.$route.query.itemId;
+            }
             this.http.postDel({id:id,bl:true}).then(({data})=>{
                 if(data.success){
                     let id = JSON.parse(localStorage.getItem('userId'));
@@ -79,6 +99,7 @@ export default{
                         let list = [...data.doc];
                         this.$store.commit('getAllData',{list});
                     })
+                    this.$router.push({path:'/task'});
                 }
                 this.$store.commit('maskShow',{bl:false});
                 this.$store.commit('editShow',{bl:false});
@@ -89,8 +110,20 @@ export default{
         
     },
     created(){
-        this.title = this.$store.state.childWantChange.itemTitle;
-        this.info = this.$store.state.childWantChange.itemInfo;
+        this.bl = typeof this.$route.query.itemId === 'undefined'?true:false;
+        if(this.bl){
+            this.title = this.$store.state.childWantChange.itemTitle;
+            this.info = this.$store.state.childWantChange.itemInfo;
+        }else{
+            this.http.getFindone({id:this.$route.query.itemId}).then(({data})=>{
+                if(data.success){
+                    // 当前所在任务
+                    this.title = data.doc.itemTitle;
+                    this.info = data.doc.itemInfo;
+                }
+            })
+        }
+        
     }
 }
 </script>

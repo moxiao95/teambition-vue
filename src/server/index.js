@@ -16,7 +16,7 @@ function postSign(params){
     return tb.post('/sign',params);
 }
 
-// 用户获取
+// 用户获取所有任务
 function getItem(params){
     return tb.get('/item?userId='+params.userId);
 }
@@ -46,6 +46,10 @@ function postThorough(params){
     return tb.post('/thorough',params)
 }
 
+// 查找任用单个任务
+function getFindone(params){
+    return tb.get('/one?id='+params.id)
+}
 
 export default{
     install(Vue){
@@ -57,7 +61,8 @@ export default{
             postStar,
             postDel,
             postModify,
-            postThorough
+            postThorough,
+            getFindone
         }
     }
 }

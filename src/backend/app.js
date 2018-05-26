@@ -24,6 +24,48 @@ app.all('*',function (req,res,next){
 // mongoose规则
 let Schema = mongoose.Schema;
 
+// ------------------------------------------------------------login页面------------------------------------------------------------------------------------------------
+
+// 创建关于注册新用户的schema，规定数据类型
+// 用户名、用户密码
+let userSchema = new Schema({
+    userName: String,
+    passWord: String
+})
+// 定义模块
+let User = mongoose.model('User',userSchema,'userInfo');
+
+// 注册用户
+app.post('/sign',function(req,res){
+    User.findOne({userName:req.body.userName},function(err,doc){
+        if(doc){
+            res.send({success:false});
+        }else{
+            User.create({userName:req.body.userName,passWord:req.body.passWord},function(err,doc){
+                if(doc){
+                    res.send({success:true,doc:doc});
+                    Item.create({userId:doc.id,itemTitle:'默认项目1',itemInfo:'默认简介',itemStar:false,itemDel:false},function(err,doc){
+                        if(doc){
+                            console.log('子内容成功了')
+                        }
+                    })
+                }
+            })
+        }
+    })
+})
+
+// 登录验证
+app.post('/login',function(req,res){
+    User.findOne({userName:req.body.userName,passWord:req.body.passWord},function(err,doc){
+        if(doc){
+            res.send({success:true,doc:doc})
+        }else{
+            res.send({success:false})
+        }
+    })
+})
+
 // ------------------------------------------------------------------task页面---------------------------------------------------------------------------------------------
 
 // 指定关于用户具体信息的数据类型
@@ -35,7 +77,7 @@ let itemSchema = new Schema({
     itemStar: Boolean,
     itemDel: Boolean
 })
-// 使用注册好的具体信息的规则
+// 定义模块
 let Item = mongoose.model('Item',itemSchema,'userItem');
 
 // 用户所有的子项目
@@ -137,61 +179,25 @@ app.post('/thorough',function(req,res){
 })
 
 
+// --------------------------------------------------------------------other页面------------------------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ------------------------------------------------------------login页面------------------------------------------------------------------------------------------------
-
-// 创建关于注册新用户的schema，规定数据类型
-// 用户名、用户密码
-let userSchema = new Schema({
-    userName: String,
-    passWord: String
-})
-// 引用指定的注册规则
-let User = mongoose.model('User',userSchema,'userInfo');
-
-// 注册用户
-app.post('/sign',function(req,res){
-    User.findOne({userName:req.body.userName},function(err,doc){
-        if(doc){
-            res.send({success:false});
-        }else{
-            User.create({userName:req.body.userName,passWord:req.body.passWord},function(err,doc){
-                if(doc){
-                    res.send({success:true,doc:doc});
-                    Item.create({userId:doc.id,itemTitle:'默认项目1',itemInfo:'默认简介',itemStar:false,itemDel:false},function(err,doc){
-                        if(doc){
-                            console.log('子内容成功了')
-                        }
-                    })
-                }
-            })
-        }
-    })
-})
-
-// 登录验证
-app.post('/login',function(req,res){
-    User.findOne({userName:req.body.userName,passWord:req.body.passWord},function(err,doc){
+//  查找用户任务
+app.get('/one',function(req,res){
+    Item.findOne({_id:req.query.id},function(err,doc){
         if(doc){
             res.send({success:true,doc:doc})
         }else{
-            res.send({success:false})
+            console.log(400)
         }
+        
     })
 })
+
+// 定义好用户任务详情的数据类型
+let detailSchema = new Schema({
+    itemId:String,
+    detailTitle:String
+})
+
+// 定义模块
+let Detail = mongoose.model('detail',detailSchema,'itemDetail');

@@ -8,7 +8,9 @@ let store = new Vuex.Store({
         childAddShow:false,
         allData:[],
         childEditShow:false,
-        childWantChange:''
+        childWantChange:'',
+        otherHeadItem:'',
+        otherHeadChangeShow:false
     },
     mutations: {
         maskShow(state,params){ // 遮罩层显示
@@ -25,6 +27,9 @@ let store = new Vuex.Store({
         },
         wantChangeItem(state,params){ // 想要修改的项目的id
             state.childWantChange = params.item;
+        },
+        changeHeadTitle(state,params){
+            state.otherHeadItem = params.item;
         }
     },
     actions: {
