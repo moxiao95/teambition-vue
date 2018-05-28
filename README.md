@@ -1,6 +1,7 @@
 # teambition-vue
 
 ## 模仿teambition写的后台管理：
+
 **技术栈：** vue全家桶、Node.js、mongodb数据库
 ----------
 **依赖：** axios、body-parser、cors、iview、js-cookie、mongoose、vue、vue-router、vuex
