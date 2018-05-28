@@ -1,9 +1,11 @@
 # teambition-vue
 
 ## 模仿teambition写的后台管理：
-
+----------
 **技术栈：** vue全家桶、Node.js、mongodb数据库
+----------
 **依赖：** axios、body-parser、cors、iview、js-cookie、mongoose、vue、vue-router、vuex
+----------
 **功能实现：**
   1. 用户注册：在用户使用时根据数据中存储的数据来判断是否已经注册，
   2. 用户登录：在用户登录的时候在数据中查询，如果没有给用户就不能登录，如果有的话跳转路由，并且缓存本地cookie，用户id缓存本地localStorage中；
