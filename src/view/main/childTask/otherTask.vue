@@ -1,6 +1,7 @@
 <template>
 <section class="other-task-box">
     <OtherHead />
+    <router-view></router-view>
     <!-- 修改框 -->
     <Edit v-if="editShow"/>
     <!-- 遮罩层 -->

@@ -50,7 +50,7 @@ export default{
             this.$store.commit('editShow',{bl:true});
         },
         toOtherTask(){ // 这是路由跳转
-            this.$router.push({name:'otherTask',query:{itemId:this.item._id}});
+            this.$router.push({name:'otherItem',query:{itemId:this.item._id,newItem:true}});
         }
     }
 } 

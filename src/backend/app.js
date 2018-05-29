@@ -201,14 +201,3 @@ let detailSchema = new Schema({
 
 // 定义模块
 let Detail = mongoose.model('detail',detailSchema,'itemDetail');
-
-// 搜索详情内容
-app.get('/content',function(req,res){
-    Detail.find({itemId:req.query.id},function(err,doc){
-        if(doc){
-            res.send({success:true,doc:doc})
-        }else{
-            console.log(400)
-        }
-    })  
-})

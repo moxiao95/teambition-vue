@@ -13,8 +13,16 @@
         </span>
     </nav>
     <div class="other-head-route">
-        <router-link :to="{path:'/'}" tag="span">任务</router-link>
-        <router-link :to="{path:'/'}" tag="span">文件</router-link>
+        <router-link 
+            :to="{name:'otherItem',query:{itemId:$route.query.itemId,newItem:true}}" 
+            tag="span" 
+            :class="{'bor-bot-blue':$route.query.newItem}"
+        >任务</router-link>
+        <router-link 
+            :to="{name:'otherUser',query:{itemId:$route.query.itemId,newItem:false}}" 
+            tag="span" 
+            :class="{'bor-bot-blue':!$route.query.newItem}"
+        >文件{{$route.query.newItem}}</router-link>
     </div>
     <div class="other-item-set" @click.stop="toSetItem">
         <Icon type="android-settings" size="26"></Icon>
@@ -96,6 +104,9 @@ export default{
     cursor: pointer;
 }
 .other-head-route>span:hover{
+    border-bottom-color: blue;
+}
+.other-head .other-head-route .bor-bot-blue{
     border-bottom-color: blue;
 }
 </style>
