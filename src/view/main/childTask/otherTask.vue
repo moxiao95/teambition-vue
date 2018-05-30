@@ -33,7 +33,6 @@ export default{
         OtherHead,Edit
     },
     created(){
-        console.log(this.$store.state.childEditShow)
         this.http.getFindone({id:this.$route.query.itemId}).then(({data})=>{
             if(data.success){
                 // 当前所在任务

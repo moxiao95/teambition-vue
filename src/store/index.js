@@ -10,7 +10,8 @@ let store = new Vuex.Store({
         childEditShow:false,
         childWantChange:'',
         otherHeadItem:'',
-        otherHeadChangeShow:false
+        otherHeadChangeShow:false,
+        userItemList:[]
     },
     mutations: {
         maskShow(state,params){ // 遮罩层显示
@@ -30,6 +31,10 @@ let store = new Vuex.Store({
         },
         changeHeadTitle(state,params){
             state.otherHeadItem = params.item;
+        },
+        addUserItemList(state,params){
+            state.userItemList = [...params.list];
+            console.log(state.userItemList)
         }
     },
     actions: {

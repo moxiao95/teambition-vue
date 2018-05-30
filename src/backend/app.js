@@ -109,13 +109,11 @@ app.post('/star',function(req,res){
             console.log('星标成功');
             res.send({
                 success:true,
-                code:'星标成功',
                 doc:doc
             })
         }else{
             res.send({
                 success:false,
-                code:'星标失败'
             })
         }
     })
@@ -201,3 +199,25 @@ let detailSchema = new Schema({
 
 // 定义模块
 let Detail = mongoose.model('detail',detailSchema,'itemDetail');
+
+// 添加详情数据（分类）
+app.post('/itemDetail',function(req,res){
+    Detail.create({itemId:req.body.id,detailTitle:req.body.title},function(err,doc){
+        if(doc){
+            res.send({success:true,doc:doc})
+        }else(
+            console.log(400)
+        )
+    })
+})
+
+// 查找详细数据（分类）
+app.get('/detailAll',function(req,res){
+    Detail.find({itemId:req.query.id},function(err,doc){
+        if(doc){
+            res.send({success:true,doc:doc})
+        }else{
+            console.log(400)
+        }
+    })
+})

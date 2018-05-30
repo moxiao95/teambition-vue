@@ -4,12 +4,26 @@
         <router-link 
             :to="{path:'/task'}"
             tag="span"
-            class="go-home-page"
+            class="go-home-page fl"
         >首页</router-link>
-        <span>></span>
-        <span class="now-item-title" @click="showJump">
-            {{nowItemTitle}}
+        <span class="fl">></span>
+        <span class="now-item-title fl" @click="showJump">
+            {{nowItemTitle.itemTitle}}
             <Icon type="ios-arrow-down" size="20"></Icon>
+        </span>
+        <span class="now-item-star fl" @click="itemToStar">
+            <Icon 
+                type="star" 
+                class="item-star-icon item-is-star"
+                size="20"
+                v-show="nowItemTitle.itemStar"
+            ></Icon>
+            <Icon 
+                type="star" 
+                class="item-star-icon" 
+                size="20"
+                v-show="!nowItemTitle.itemStar"
+            ></Icon>
         </span>
     </nav>
     <div class="other-head-route">
@@ -22,7 +36,7 @@
             :to="{name:'otherUser',query:{itemId:$route.query.itemId,newItem:false}}" 
             tag="span" 
             :class="{'bor-bot-blue':!$route.query.newItem}"
-        >文件{{$route.query.newItem}}</router-link>
+        >文件</router-link>
     </div>
     <div class="other-item-set" @click.stop="toSetItem">
         <Icon type="android-settings" size="26"></Icon>
@@ -46,19 +60,33 @@ export default{
         toSetItem(){ // 显示遮罩层和修改框
             this.$store.commit('maskShow',{bl:true});
             this.$store.commit('editShow',{bl:true});
+        },
+        itemToStar(){ // 这是点击星标的事件，点亮或取消
+            let id = this.$route.query.itemId;
+            let bl = this.$store.state.otherHeadItem.itemStar;
+            this.http.postStar({id:id,bl:!bl}).then(({data})=>{
+                if(data.success){
+                    this.http.getFindone({id:this.$route.query.itemId}).then(({data})=>{
+                        if(data.success){
+                            // 当前所在任务
+                            this.$store.commit('changeHeadTitle',{item:data.doc});
+                        }
+                    })
+                }
+            })
         }
     },
     computed:{
         nowItemTitle(){
-            return this.$store.state.otherHeadItem.itemTitle;
+            return this.$store.state.otherHeadItem;
         }
-    },
-    created(){
-        
     }
 }
 </script>
 <style>
+.fl{
+    float: left;
+}
 .other-head{
     height: 40px;
     background-color: #f5f5f5;
@@ -108,5 +136,20 @@ export default{
 }
 .other-head .other-head-route .bor-bot-blue{
     border-bottom-color: blue;
+}
+.now-item-star{
+    padding: 0 15px;
+    position: relative;
+    height: 40px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+.now-item-star .item-star-icon{
+    position: absolute;
+    left: 0;
+    top: 10px;
+}
+.item-is-star{
+    color: rgb(120, 221, 4);
 }
 </style>

@@ -1,26 +1,74 @@
 <template>
 <ul class="other-all-item">
-    <li>
-        <header class="item-li-head">
-            <div class="li-head-title">完成 · 1</div>
-            <div class="li-head-btn">
-                <Icon type="android-arrow-dropdown-circle"></Icon>
+    <Lis 
+        v-for="item in userItemList"
+        :key="item._id"
+        :item="item"
+    />
+    <!-- 添加项目分类的按钮 -->
+    <li class="all-item-add">
+        <div class="item-add-btn" v-show="addItemShow" @click.stop="addShowBox">
+            <Icon type="plus" size="20"></Icon>
+            <span>新建任务列表</span>
+        </div>
+        <div class="item-add-box" v-show="!addItemShow">
+            <Input v-model="addValue" placeholder="新建任务列表" style="width: 240px" />
+            <div>
+                <Button type="ghost" class="add-box-btn" @click.stop="addBoxCancel">取消</Button>
+                <Button type="primary" class="add-box-btn" @click.stop="addBoxYes">保存</Button>
             </div>
-        </header>
-        <ul class="item-li-list">
-            <li>1</li>
-            <li>2</li>
-            <li class="li-list-add">+</li>
-        </ul>
+        </div>
     </li>
 </ul>
 </template>
 <script>
+import Lis from '@/view/main/childTask/otherTaskItem/otherItemList'
 export default{
+    components:{
+        Lis
+    },
     data(){
         return {
-
+            addItemShow:true,
+            addValue:''
         }
+    },
+    methods:{
+        addShowBox(){
+            this.addItemShow = false;
+        },
+        addBoxCancel(){
+            this.addItemShow = true;
+            this.addValue = '';
+        },
+        addBoxYes(){ // 确定添加
+            let id = this.$route.query.itemId;
+            if(this.addValue !== ''){
+                this.http.postItemDetail({id:id,title:this.addValue}).then(({data})=>{
+                    if(data.success){
+                        this.http.getDetailAll({id:id}).then(({data})=>{
+                            this.$store.commit('addUserItemList',{list:data.doc});
+                        })
+                        this.addItemShow = true;
+                        this.addValue = '';
+                    }
+                    
+                })
+            }else{
+                alert('请输入内容');
+            }
+        }
+    },
+    computed:{
+        userItemList(){
+            return this.$store.state.userItemList;
+        }
+    },
+    created(){
+        let id = this.$route.query.itemId;
+        this.http.getDetailAll({id:id}).then(({data})=>{
+            this.$store.commit('addUserItemList',{list:data.doc});
+        })
     }
 }
 </script>
@@ -45,30 +93,25 @@ export default{
     box-shadow: 1px 1px 1px 1px rgb(219, 218, 218);
     background-color: #eee;
 }
-.item-li-head{
-    padding:0 10px 0 20px;
-    height: 40px;
-    font: bold 16px/40px "微软雅黑";
-    margin-bottom: 5px;
+
+.other-all-item .all-item-add{
+    cursor: pointer;
+    width: 288px;
+    height: auto;
+    color: #a6a6a6;
+    font: 18px/46px "微软雅黑";
+    vertical-align: top;
 }
-.li-head-title{
-    float: left;
+.all-item-add .item-add-box{
+    text-align: center;
 }
-.li-head-btn{
-    float: right;
-    padding: 0 10px;
+.item-add-box .add-box-btn{
+    margin: 0 15px;
 }
-.item-li-list{
-    width: 260px;
-    margin: 0 14px;
+.all-item-add .item-add-btn{
+    padding-left: 30px;
 }
-.item-li-list>li{
-    background-color: #fff;
-    height: 50px;
-    border-radius: 5px;
-    margin-bottom: 5px;
-}
-.item-li-list .li-list-add{
-    background-color: transparent;
+.all-item-add .item-add-btn:hover{
+    color: blue;
 }
 </style>

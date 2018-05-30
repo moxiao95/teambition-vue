@@ -51,6 +51,16 @@ function getFindone(params){
     return tb.get('/one?id='+params.id)
 }
 
+// 创建用户任务的分类项
+function postItemDetail(params){
+    return tb.post('/itemDetail',params)
+}
+
+// 获取用户任务的分类型
+function getDetailAll(params){
+    return tb.get('/detailAll?id='+params.id)
+}
+
 export default{
     install(Vue){
         Vue.prototype.http = {
@@ -62,7 +72,9 @@ export default{
             postDel,
             postModify,
             postThorough,
-            getFindone
+            getFindone,
+            postItemDetail,
+            getDetailAll
         }
     }
 }
