@@ -34,7 +34,6 @@ let store = new Vuex.Store({
         },
         addUserItemList(state,params){
             state.userItemList = [...params.list];
-            console.log(state.userItemList)
         }
     },
     actions: {

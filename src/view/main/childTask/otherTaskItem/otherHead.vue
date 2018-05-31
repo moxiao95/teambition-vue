@@ -50,7 +50,7 @@ export default{
     },
     data(){
         return {
-            
+            nowItem:true
         }
     },
     methods:{
@@ -80,6 +80,9 @@ export default{
         nowItemTitle(){
             return this.$store.state.otherHeadItem;
         }
+    },
+    created(){
+        
     }
 }
 </script>

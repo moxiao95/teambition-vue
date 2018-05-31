@@ -61,6 +61,16 @@ function getDetailAll(params){
     return tb.get('/detailAll?id='+params.id)
 }
 
+// 删除分类
+function postDelDetail(params){
+    return tb.post('/delDetail',params)
+}
+
+// 修改分类
+function postDetailChange(params){
+    return tb.post('/detailChange',params)
+}
+
 export default{
     install(Vue){
         Vue.prototype.http = {
@@ -74,7 +84,9 @@ export default{
             postThorough,
             getFindone,
             postItemDetail,
-            getDetailAll
+            getDetailAll,
+            postDelDetail,
+            postDetailChange
         }
     }
 }

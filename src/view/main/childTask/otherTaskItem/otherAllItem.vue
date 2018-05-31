@@ -52,7 +52,6 @@ export default{
                         this.addItemShow = true;
                         this.addValue = '';
                     }
-                    
                 })
             }else{
                 alert('请输入内容');
@@ -92,6 +91,7 @@ export default{
     border-radius: 5px;
     box-shadow: 1px 1px 1px 1px rgb(219, 218, 218);
     background-color: #eee;
+    position: relative;
 }
 
 .other-all-item .all-item-add{

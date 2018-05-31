@@ -221,3 +221,29 @@ app.get('/detailAll',function(req,res){
         }
     })
 })
+
+// 删除分类
+app.post('/delDetail',function(req,res){
+    Detail.findOneAndDelete({_id:req.body.id},(err,doc)=>{
+        if(doc){
+            res.send({success:true})
+        }else{
+            console.log(400)
+        }
+    })
+})
+
+// 修改分类数据
+app.post('/detailChange',function(req,res){
+    Detail.findOneAndUpdate({_id:req.body.id},{detailTitle:req.body.title},(err,doc)=>{
+        if(doc){
+            res.send({success:true})
+        }else{
+            console.log(400)
+        }
+    })
+})
+
+
+
+// -----------------------------------------------------------------分类中的小任务--------------------------------------------------------------------------------
