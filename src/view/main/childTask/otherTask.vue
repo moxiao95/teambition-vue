@@ -6,20 +6,20 @@
     <Edit v-if="editShow"/>
     <!-- 遮罩层 -->
     <section class="child-mask" v-if="maskShow"></section>
+    <!-- 用户分类项目中的小任务 -->
+    <SmallEdit />
 </section>
 </template>
 <script>
 import OtherHead from '@/view/main/childTask/otherTaskItem/otherHead';
 import Edit from '@/view/main/childTask/samllItem/editUserItem';
+import SmallEdit from '@/view/main/childTask/samllItem/otherSmallEdit';
 
 export default{
     data(){
         return {
 
         }
-    },
-    methods:{
-        
     },
     computed:{
         maskShow(){ // 遮罩层显示
@@ -30,7 +30,7 @@ export default{
         }
     },
     components:{
-        OtherHead,Edit
+        OtherHead,Edit,SmallEdit
     },
     created(){
         this.http.getFindone({id:this.$route.query.itemId}).then(({data})=>{

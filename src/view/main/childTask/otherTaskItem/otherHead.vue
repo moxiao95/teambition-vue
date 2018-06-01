@@ -7,9 +7,8 @@
             class="go-home-page fl"
         >首页</router-link>
         <span class="fl">></span>
-        <span class="now-item-title fl" @click="showJump">
+        <span class="now-item-title fl" >
             {{nowItemTitle.itemTitle}}
-            <Icon type="ios-arrow-down" size="20"></Icon>
         </span>
         <span class="now-item-star fl" @click="itemToStar">
             <Icon 
@@ -54,9 +53,6 @@ export default{
         }
     },
     methods:{
-        showJump(){
-            
-        },
         toSetItem(){ // 显示遮罩层和修改框
             this.$store.commit('maskShow',{bl:true});
             this.$store.commit('editShow',{bl:true});

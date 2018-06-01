@@ -1,8 +1,8 @@
 <template>
-<li>
+<li class="detail-item-list">
     <!-- 整个的头部 -->
     <header class="item-li-head">
-        <div class="li-head-title">{{item.detailTitle}} · 1</div>
+        <div class="li-head-title">{{item.detailTitle}}{{listAllSmall.length>0?' · '+listAllSmall.length:''}}</div>
         <div class="li-head-btn" @click.stop="clickChangeData">
             <Icon type="android-arrow-dropdown-circle"></Icon>
         </div>
@@ -64,13 +64,44 @@
     </div>
     <!-- 所有的子项任务 -->
     <ul class="item-li-list">
-        <li>1</li>
-        <li class="li-list-add">+</li>
+        <!-- 子任务 -->
+        <Small 
+            v-for="item in listAllSmall"
+            :key="item._id"
+            :id="item._id"
+        />
+        <!-- 添加按钮 -->
+        <li class="li-list-add" @click.stop="createSmallShow" v-show="listAddShow">
+            <Icon type="plus-circled" size="20"></Icon>
+            <span>添加任务</span>
+        </li>
+        <!-- 具体的添加详情 -->
+        <li class="create-small-box" v-show="!listAddShow">
+            <div class="small-box-value">
+                <Input v-model="smallValue" type="textarea" placeholder="任务内容" style="width: 230px"></Input>
+            </div>
+            <div class="clearfix small-box-time">
+                <Col span="12" >
+                    <DatePicker type="date"  placeholder="设置日期" style="width: 100px" @on-change="changeDate" placement="bottom-end"></DatePicker>
+                </Col>
+                <Col span="12" >
+                    <TimePicker type="time"  placeholder="设置时间" style="width: 100px" @on-change="changeTime"></TimePicker>
+                </Col>
+            </div>
+            <div class="small-box-btn">
+                <Button type="ghost" class="small-box-btns" @click.stop="createSmallShow">取消</Button>
+                <Button type="primary" class="small-box-btns" @click.stop="createSmallItem">确定</Button>
+            </div>
+        </li>
     </ul>
 </li>
 </template>
 <script>
+import Small from '@/view/main/childTask/otherTaskItem/otherDetailSmall'
 export default{
+    components:{
+        Small
+    },
     props:['item'],
     data(){
         return {
@@ -78,11 +109,20 @@ export default{
             addShow:false,
             changeShow:false,
             newItemTitle:'',
-            newItemValue:''
+            newItemValue:'',
+            listAddShow:true,
+            smallValue:'',
+            dateValue:'',
+            timeValue:'',
+            listAllSmall:[]
         }
     },
     created(){
-        
+        this.http.getSeeSmall({id:this.item._id}).then(({data})=>{
+            if(data.success){
+                this.listAllSmall = [...data.doc];
+            }
+        })
     },
     methods:{
         clickChangeData(){
@@ -148,11 +188,47 @@ export default{
                     })
                 }
             })
+        },
+        createSmallShow(){ // 创建分类中的小任务
+            this.listAddShow = !this.listAddShow;
+        },
+        changeTime(timeValue){
+            this.timeValue = timeValue;
+        },
+        changeDate(dateValue){
+            this.dateValue = dateValue;
+        },
+        createSmallItem(){ // 创建用户任务的中的小任务
+            let title = this.smallValue.trim();
+            if(title===''){
+                alert('不能为空');
+                return;
+            }
+            this.http.postCreatSmall({
+                id:this.item._id,
+                title:title,
+                date:this.dateValue,
+                time:this.timeValue
+            }).then(({data})=>{
+                this.listAddShow = !this.listAddShow;
+                if(data.success){   
+                    this.http.getSeeSmall({id:this.item._id}).then(({data})=>{
+                        if(data.success){
+                            this.listAllSmall = [...data.doc];
+                        }
+                    })
+                }
+            })
         }
     }
 }
 </script>
 <style>
+.clearfix::after{
+    content: '';
+    display: block;
+    clear: both;
+}
 .item-li-head{
     padding:0 10px 0 20px;
     height: 40px;
@@ -170,14 +246,41 @@ export default{
     width: 260px;
     margin: 0 14px;
 }
+.item-li-list .create-small-box{
+    border-radius: 0;
+    height: auto;
+}
+.small-box-value{
+    text-align: center;
+    padding: 5px 0;
+}
+.small-box-time,
+.small-box-btn{
+    text-align: center;
+    padding: 5px 0;
+}
+.small-box-btn{
+    text-align: center;
+}
+.small-box-btn .small-box-btns{
+    margin: 0 30px;
+}
 .item-li-list>li{
     background-color: #fff;
-    height: 50px;
+    min-height: 50px;
     border-radius: 5px;
     margin-bottom: 5px;
 }
 .item-li-list .li-list-add{
     background-color: transparent;
+    box-sizing: border-box;
+    padding-left: 15px;
+    font: 18px/50px "微软雅黑";
+    color: blue;
+    cursor: pointer;
+}
+.li-list-add>span{
+    margin-left: 7px;
 }
 .li-change-box,
 .change-item-list,
@@ -230,5 +333,8 @@ export default{
 }
 .change-box-btn{
     margin: 0 6px;
+}
+.detail-item-list{
+    vertical-align: top;
 }
 </style>

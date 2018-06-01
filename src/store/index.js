@@ -11,7 +11,8 @@ let store = new Vuex.Store({
         childWantChange:'',
         otherHeadItem:'',
         otherHeadChangeShow:false,
-        userItemList:[]
+        userItemList:[],
+        newSmallItem:{}
     },
     mutations: {
         maskShow(state,params){ // 遮罩层显示
@@ -29,11 +30,14 @@ let store = new Vuex.Store({
         wantChangeItem(state,params){ // 想要修改的项目的id
             state.childWantChange = params.item;
         },
-        changeHeadTitle(state,params){
+        changeHeadTitle(state,params){ // 修改用户创建的任务的名称
             state.otherHeadItem = params.item;
         },
-        addUserItemList(state,params){
+        addUserItemList(state,params){ // 用户任务列表
             state.userItemList = [...params.list];
+        },
+        smallNewItem(state,params){ // 当前想要修改的小任务
+            state.newSmallItem = params.item;
         }
     },
     actions: {

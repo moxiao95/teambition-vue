@@ -71,6 +71,26 @@ function postDetailChange(params){
     return tb.post('/detailChange',params)
 }
 
+// 创建小任务
+function postCreatSmall(params){
+    return tb.post('/creatSmall',params)
+}
+
+// 查找对应的所有小任务
+function getSeeSmall(params){
+    return tb.get('/seeSmall?id='+params.id)
+}
+
+// 改变当前小任务的完成状态
+function postChangeClick(params){
+    return tb.post('/changeClick',params)
+}
+
+// 查找单个小任务
+function getOneSmall(params){
+    return tb.get('/oneSmall?id='+params.id)
+}
+
 export default{
     install(Vue){
         Vue.prototype.http = {
@@ -86,7 +106,11 @@ export default{
             postItemDetail,
             getDetailAll,
             postDelDetail,
-            postDetailChange
+            postDetailChange,
+            postCreatSmall,
+            getSeeSmall,
+            postChangeClick,
+            getOneSmall
         }
     }
 }

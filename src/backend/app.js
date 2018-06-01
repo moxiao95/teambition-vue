@@ -198,7 +198,7 @@ let detailSchema = new Schema({
 })
 
 // 定义模块
-let Detail = mongoose.model('detail',detailSchema,'itemDetail');
+let Detail = mongoose.model('Detail',detailSchema,'itemDetail');
 
 // 添加详情数据（分类）
 app.post('/itemDetail',function(req,res){
@@ -244,6 +244,64 @@ app.post('/detailChange',function(req,res){
     })
 })
 
-
-
 // -----------------------------------------------------------------分类中的小任务--------------------------------------------------------------------------------
+
+// 定义分类中的小任务
+let smallSchema = new Schema({
+    itemId:String,
+    smallTitle:String,
+    smallDate:String,
+    smallTime:String,
+    smallClick:Boolean
+})
+
+// 模块
+let Small = mongoose.model('Small',smallSchema,'detailSmall');
+
+// 创建小任务
+app.post('/creatSmall',function(req,res){
+    Small.create({itemId:req.body.id,
+                    smallTitle:req.body.title,
+                    smallDate:req.body.date,
+                    smallTime:req.body.time,
+                    smallClick:false},function(err,doc){
+        if(doc){
+            res.send({success:true,doc:doc})
+        }else{
+            console.log(400)
+        }
+    })
+})
+
+// 查找对应分类的小任务
+app.get('/seeSmall',function(req,res){
+    Small.find({itemId:req.query.id},function(err,doc){
+        if(doc){
+            res.send({success:true,doc:doc})
+        }else{
+            console.log(400)
+        }
+    })
+})
+
+// 修改当前小任务的完成状态
+app.post('/changeClick',function(req,res){
+    Small.findOneAndUpdate({_id:req.body.id},{smallClick:req.body.bl},function(err,doc){
+        if(doc){
+            res.send({success:true,doc:doc})
+        }else{
+            console.log(400)
+        }
+    })
+})
+
+// 查找单个的小任务
+app.get('/oneSmall',function(req,res){
+    Small.findOne({_id:req.query.id},function(err,doc){
+        if(doc){
+            res.send({success:true,doc:doc})
+        }else{
+            console.log(400)
+        }
+    })
+})
