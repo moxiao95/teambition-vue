@@ -295,11 +295,38 @@ app.post('/changeClick',function(req,res){
     })
 })
 
+// 在修改栏中修改小任务
+app.post('/editSmall',function(req,res){
+    Small.findOneAndUpdate({_id:req.body.id},
+        {smallTitle:req.body.title,
+        smallClick:req.body.click,
+        samllDate:req.body.date,
+        smallTime:req.body.time},
+        function(err,doc){
+            if(doc){
+                res.send({success:true})
+            }else{
+                console.log(400)
+            }
+    })
+})
+
 // 查找单个的小任务
 app.get('/oneSmall',function(req,res){
     Small.findOne({_id:req.query.id},function(err,doc){
         if(doc){
             res.send({success:true,doc:doc})
+        }else{
+            console.log(400)
+        }
+    })
+})
+
+// 删除当前的小任务
+app.post('delSmall',function(req,res){
+    Small.findOneAndDelete({_id:req.body.id},function(err,doc){
+        if(doc){
+            res.send({success:true})
         }else{
             console.log(400)
         }

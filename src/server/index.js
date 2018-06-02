@@ -91,6 +91,16 @@ function getOneSmall(params){
     return tb.get('/oneSmall?id='+params.id)
 }
 
+// 修改小任务的详情
+function postEditSmall(params){
+    return tb.post('/editSmall',params)
+}
+
+// 删除当前小任务
+function postDelSmall(params){
+    return tb.post('/delSmall',params);
+}
+
 export default{
     install(Vue){
         Vue.prototype.http = {
@@ -110,7 +120,9 @@ export default{
             postCreatSmall,
             getSeeSmall,
             postChangeClick,
-            getOneSmall
+            getOneSmall,
+            postEditSmall,
+            postDelSmall
         }
     }
 }

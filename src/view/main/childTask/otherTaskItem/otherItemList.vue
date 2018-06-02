@@ -210,6 +210,7 @@ export default{
                 date:this.dateValue,
                 time:this.timeValue
             }).then(({data})=>{
+                this.smallValue = '';
                 this.listAddShow = !this.listAddShow;
                 if(data.success){   
                     this.http.getSeeSmall({id:this.item._id}).then(({data})=>{

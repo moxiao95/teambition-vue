@@ -1,21 +1,24 @@
 <template>
 <li class="small-list-box">
     <!-- 正常的没点击的 -->
-    <div class="small-no-click" v-show="smallItem.smallClick" @click.stop="showNowItem">
+    <div class="small-no-click" v-show="!smallItem.smallClick" @click.stop="showNowItem">
         <div class="small-is-hover"></div>
         <span class="small-click" @click.stop="changeSmallClick">
             <Icon type="ios-circle-outline" size="30"></Icon>
         </span>
         <span class="small-title">{{smallItem.smallTitle}}</span>
-        <span></span>
+        <span class="small-del-icon" @click.stop="delSmallItem">
+            <Icon type="ios-close-empty" size="30"></Icon>
+        </span>
     </div>
     <!-- 点击过的 -->
-    <div class="small-yes-click" v-show="!smallItem.smallClick" @click.stop="showNowItem">
+    <div class="small-yes-click" v-show="smallItem.smallClick" @click.stop="showNowItem">
         <span class="small-click" @click.stop="changeSmallClick">
             <Icon type="ios-checkmark-outline" size="30"></Icon>
         </span>
         <span class="small-title">{{smallItem.smallTitle}}</span>
     </div>
+    <div class=""></div>
 </li>
 </template>
 <script>
@@ -41,6 +44,18 @@ export default{
         showNowItem(){ // 显示出来修改框
             this.$store.commit('maskShow',{bl:true});
             this.$store.commit('smallNewItem',{item:this.smallItem});
+            this.$store.commit('smallShowEdit',{bl:true});
+        },
+        delSmallItem(){ // 删除当前小任务
+            this.http.postDelSmall({id:this.smallItem._id}).then(({data})=>{
+                if(data.success){
+                    this.http.getOneSmall({id:this.id}).then(({data})=>{
+                        if(data.success){
+                            this.smallItem = data.doc;
+                        }
+                    })
+                }
+            })
         }
     },
     created(){
@@ -50,6 +65,8 @@ export default{
                 this.smallItem = data.doc;
             }
         })
+    },
+    computed:{
     }
 }
 </script>
@@ -91,5 +108,17 @@ export default{
 }
 .small-list-box{
     cursor: pointer;
+}
+.small-del-icon{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 0 10px;
+}
+.small-show-time{
+    float: left;
+    width: 100%;
+    height: 20px;
+    font: 10px/16px "微软雅黑";
 }
 </style>

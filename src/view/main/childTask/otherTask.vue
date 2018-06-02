@@ -7,7 +7,7 @@
     <!-- 遮罩层 -->
     <section class="child-mask" v-if="maskShow"></section>
     <!-- 用户分类项目中的小任务 -->
-    <SmallEdit />
+    <SmallEdit v-if="smallEditshow"/>
 </section>
 </template>
 <script>
@@ -27,6 +27,9 @@ export default{
         },
         editShow(){ // 修改框显示
             return this.$store.state.childEditShow;
+        },
+        smallEditshow(){
+            return this.$store.state.smallEditShow;
         }
     },
     components:{
