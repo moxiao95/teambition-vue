@@ -31,7 +31,6 @@
 </section>
 </template>
 <script>
-import {Sign} from '@/server/index.js';
 import Cookies from 'js-cookie';
 export default{
     data(){

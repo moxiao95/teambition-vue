@@ -12,8 +12,7 @@ let store = new Vuex.Store({
         otherHeadItem:'',
         otherHeadChangeShow:false,
         userItemList:[],
-        newSmallItem:{},
-        smallEditShow:false
+        newSmallItem:{}
     },
     mutations: {
         maskShow(state,params){ // 遮罩层显示
@@ -39,9 +38,6 @@ let store = new Vuex.Store({
         },
         smallNewItem(state,params){ // 当前想要修改的小任务
             state.newSmallItem = params.item;
-        },
-        smallShowEdit(state,params){ // 控制小任务编辑矿洞额出现
-            state.smallEditShow = params.bl;
         }
     },
     actions: {

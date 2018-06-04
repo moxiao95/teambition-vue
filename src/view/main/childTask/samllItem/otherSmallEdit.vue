@@ -21,9 +21,15 @@
         </div>
         <!-- 修改日期 -->
         <div class="change-main-date">
-            <span class="fll">修改日期：</span>
-            <Col span="12" class="fll">
-                <DatePicker type="date" v-model="dateValue" placeholder="选择日期" style="width: 200px"></DatePicker>
+            <span class="fll date-text">修改日期：</span>
+            <Col span="12" class="fll date-inp">
+                <DatePicker 
+                    type="date" 
+                    placeholder="选择日期" 
+                    style="width: 200px" 
+                    format="yyyy-MM-dd"
+                    v-model="dateValue"
+                ></DatePicker>
             </Col>
         </div>
         <!-- 修改时间 -->
@@ -53,20 +59,21 @@ export default{
         }
     },
     methods:{
-        upEditBox(){
+        upEditBox(){ // 没有更改
             this.$store.commit('maskShow',{bl:false});
-            this.$store.commit('smallShowEdit',{bl:false});
+            this.$emit('editCancel',{bl:false,rightGet:false});
         },
-        yseChangeEdit(){
+        yseChangeEdit(){ // 确定更改了内容
+            console.log(this.dateValue)
             if(this.smallTitle==='')return;
             this.http.postEditSmall({id:this.id,title:this.smallTitle,date:this.dateValue,time:this.timeValue,click:this.isClick}).then(({data})=>{
                 if(data.success){
                     this.$store.commit('maskShow',{bl:false});
-                    this.$store.commit('smallShowEdit',{bl:false});
+                    this.$emit('editCancel',{bl:false,rightGet:true});
                 }
             })
         },
-        changeNewClick(){
+        changeNewClick(){ // 是否完成
             this.isClick = !this.isClick;
         }
     },
@@ -123,21 +130,23 @@ export default{
     z-index: 10;
     margin-top: -5px;
 }
-.change-main-title,
-.change-main-date{
+.change-main-title{
     height: 50px;
     font: bold 16px/50px "微软雅黑";
     margin-bottom: 10px;
 }
-.change-main-time{
+.change-main-time,
+.change-main-date{
     height: 50px;
     margin-bottom: 10px;
 }
-.change-main-time>.time-text{
+.change-main-time>.time-text,
+.change-main-date>.date-text{
     font: bold 16px/50px "微软雅黑";
     
 }
-.change-main-time>.time-inp{
+.change-main-time>.time-inp,
+.change-main-date>.date-inp{
     margin-top: 10px;
 }
 .box-change-title{

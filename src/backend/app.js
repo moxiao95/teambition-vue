@@ -300,7 +300,7 @@ app.post('/editSmall',function(req,res){
     Small.findOneAndUpdate({_id:req.body.id},
         {smallTitle:req.body.title,
         smallClick:req.body.click,
-        samllDate:req.body.date,
+        smallDate:req.body.date,
         smallTime:req.body.time},
         function(err,doc){
             if(doc){

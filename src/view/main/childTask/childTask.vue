@@ -43,7 +43,7 @@ import Li from '@/view/main/childTask/childTaskItem/childTaskItem'
 import DelLi from '@/view/main/childTask/childTaskItem/childTaskItemDel'
 import Add from '@/view/main/childTask/samllItem/addUserItem'
 import Edit from '@/view/main/childTask/samllItem/editUserItem'
-import {get} from '@/server/index.js';
+import Cookies from 'js-cookie';
 export default{
     components:{
         Li,DelLi,Add,Edit
@@ -80,6 +80,10 @@ export default{
             let list = [...data.doc];
             this.$store.commit('getAllData',{list});
         })
+        // 如果没有cookie直接回到登录页面
+        if(!Cookies.get('teamVue')){
+            this.$router.push({path:'/login'});
+        }
     },
     methods:{
         addUserItem(){  // 点击添加新项目，添加框显示，遮罩显示

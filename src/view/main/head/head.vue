@@ -17,7 +17,7 @@ export default{
     methods:{
         toSignOut(){
             Cookies.remove('teamVue');
-            this.$router.push({path:'/'})
+            this.$router.push({path:'/login'})
         }
     }
 }

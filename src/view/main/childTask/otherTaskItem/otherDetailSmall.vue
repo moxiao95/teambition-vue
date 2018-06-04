@@ -1,7 +1,7 @@
 <template>
-<li class="small-list-box">
-    <!-- 正常的没点击的 -->
-    <div class="small-no-click" v-show="!smallItem.smallClick" @click.stop="showNowItem">
+<li class="small-list-box" @click.stop="showNowItem">
+    <!-- 正常的没点击的，没时间 -->
+    <div class="small-no-click" v-show="!smallItem.smallClick">
         <div class="small-is-hover"></div>
         <span class="small-click" @click.stop="changeSmallClick">
             <Icon type="ios-circle-outline" size="30"></Icon>
@@ -10,23 +10,31 @@
         <span class="small-del-icon" @click.stop="delSmallItem">
             <Icon type="ios-close-empty" size="30"></Icon>
         </span>
+        <span class="small-date" v-if="haveDate===''?false:true">截止日期：{{haveDate}}</span>
     </div>
     <!-- 点击过的 -->
-    <div class="small-yes-click" v-show="smallItem.smallClick" @click.stop="showNowItem">
+    <div class="small-yes-click" v-show="smallItem.smallClick" >
         <span class="small-click" @click.stop="changeSmallClick">
             <Icon type="ios-checkmark-outline" size="30"></Icon>
         </span>
         <span class="small-title">{{smallItem.smallTitle}}</span>
     </div>
-    <div class=""></div>
+    <!-- 用户分类项目中的小任务 -->
+    <SmallEdit v-if="editShow" @editCancel="editToCancel"/>
 </li>
 </template>
 <script>
+import SmallEdit from '@/view/main/childTask/samllItem/otherSmallEdit';
 export default{
+    components:{
+        SmallEdit
+    },
     props:['id'],
     data(){
         return {
-            smallItem:{}
+            smallItem:{},
+            editShow:false,
+            haveDate:''
         }
     },
     methods:{
@@ -44,7 +52,8 @@ export default{
         showNowItem(){ // 显示出来修改框
             this.$store.commit('maskShow',{bl:true});
             this.$store.commit('smallNewItem',{item:this.smallItem});
-            this.$store.commit('smallShowEdit',{bl:true});
+            // this.$store.commit('smallShowEdit',{bl:true});
+            this.editShow = true;
         },
         delSmallItem(){ // 删除当前小任务
             this.http.postDelSmall({id:this.smallItem._id}).then(({data})=>{
@@ -56,6 +65,18 @@ export default{
                     })
                 }
             })
+        },
+        editToCancel(params){ // 关闭修改窗，并且判断是不是更改了
+            this.editShow = params.bl;
+            if(params.rightGet){
+                this.http.getOneSmall({id:this.id}).then(({data})=>{
+                    if(data.success){
+                        this.smallItem = data.doc;
+                        this.haveDate = data.doc.smallDate.substring(0,10);
+
+                    }
+                })
+            }
         }
     },
     created(){
@@ -63,6 +84,7 @@ export default{
         this.http.getOneSmall({id:this.id}).then(({data})=>{
             if(data.success){
                 this.smallItem = data.doc;
+                this.haveDate = data.doc.smallDate.substring(0,10);
             }
         })
     },
@@ -73,7 +95,7 @@ export default{
 <style>
 .small-no-click,
 .small-yes-click{
-    min-height: 50px;
+    min-height: 52px;
     position: relative;
     color: #000;
 }
@@ -120,5 +142,11 @@ export default{
     width: 100%;
     height: 20px;
     font: 10px/16px "微软雅黑";
+}
+.small-date{
+    position: absolute;
+    top: 35px;
+    left: 60px;
+    color: red;
 }
 </style>

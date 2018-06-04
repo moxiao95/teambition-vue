@@ -11,7 +11,7 @@ import otherUser from '@/view/main/childTask/otherTaskItem/otherUserContent';
 
 let routes = [
     {
-        path:'/',
+        path:'/login',
         name: 'login',
         component:login
     },
@@ -41,6 +41,10 @@ let routes = [
                 ]
             }
         ]
+    },
+    {
+        path:'*',
+        redirect: '/login'
     }
 ]
 export default new Router({

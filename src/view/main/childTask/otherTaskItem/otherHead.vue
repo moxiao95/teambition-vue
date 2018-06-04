@@ -1,6 +1,5 @@
 <template>
 <header class="other-head">
-    <!-- 这是左边的导航 -->
     <nav class="other-head-nav">
         <router-link 
             :to="{path:'/task'}"
@@ -26,7 +25,6 @@
             ></Icon>
         </span>
     </nav>
-    <!-- 这是中间的路由跳转 -->
     <div class="other-head-route">
         <router-link 
             :to="{name:'otherItem',query:{itemId:$route.query.itemId,newItem:true}}" 
@@ -39,7 +37,6 @@
             :class="{'bor-bot-blue':!$route.query.newItem}"
         >文件</router-link>
     </div>
-    <!-- 右侧的设置 -->
     <div class="other-item-set" @click.stop="toSetItem">
         <Icon type="android-settings" size="26"></Icon>
     </div>

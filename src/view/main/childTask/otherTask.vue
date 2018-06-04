@@ -6,21 +6,13 @@
     <Edit v-if="editShow"/>
     <!-- 遮罩层 -->
     <section class="child-mask" v-if="maskShow"></section>
-    <!-- 用户分类项目中的小任务 -->
-    <SmallEdit v-if="smallEditshow"/>
 </section>
 </template>
 <script>
 import OtherHead from '@/view/main/childTask/otherTaskItem/otherHead';
 import Edit from '@/view/main/childTask/samllItem/editUserItem';
-import SmallEdit from '@/view/main/childTask/samllItem/otherSmallEdit';
-
+import Cookies from 'js-cookie';
 export default{
-    data(){
-        return {
-
-        }
-    },
     computed:{
         maskShow(){ // 遮罩层显示
             return this.$store.state.childMaskShow;
@@ -33,15 +25,20 @@ export default{
         }
     },
     components:{
-        OtherHead,Edit,SmallEdit
+        OtherHead,Edit
     },
     created(){
+        // 获取当前任务的所有分类
         this.http.getFindone({id:this.$route.query.itemId}).then(({data})=>{
             if(data.success){
                 // 当前所在任务
                 this.$store.commit('changeHeadTitle',{item:data.doc});
             }
         })
+        // 如果没有cookie直接回到登录页面
+        if(!Cookies.get('teamVue')){
+            this.$router.push({path:'/login'});
+        }
     }
 }
 </script>
