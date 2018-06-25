@@ -42,7 +42,7 @@ export default{
         }
     },
     methods:{
-        loginBtn(){
+        loginBtn(){ // 点击登录，判断是否存在数据库中
             if(this.userName!==''&&this.passWord!==''){
                 this.http.postLogin({userName:this.userName,passWord:this.passWord}).then(({data})=>{
                     if(data.success){
@@ -69,7 +69,7 @@ export default{
                 },1500)
             }
         },
-        registerBtn(){
+        registerBtn(){ // 点击注册，不能重复注册
             if(this.userName!==''&&this.passWord!==''){
                 this.http.postSign({userName:this.userName,passWord:this.passWord}).then(({data})=>{
                     if(data.success){
@@ -100,7 +100,7 @@ export default{
             }
         }
     },
-    created(){
+    created(){ // 判断是否是登录过的
         if(Cookies.get('teamVue')){
             this.$router.push({path:'/task'});
         }

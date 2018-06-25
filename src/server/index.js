@@ -101,6 +101,7 @@ function postDelSmall(params){
     return tb.post('/delSmall',params);
 }
 
+// 暴露方法
 export default{
     install(Vue){
         Vue.prototype.http = {

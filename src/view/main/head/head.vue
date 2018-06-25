@@ -15,7 +15,7 @@
 import Cookies from 'js-cookie';
 export default{
     methods:{
-        toSignOut(){
+        toSignOut(){ // 点击退出，清楚cookie
             Cookies.remove('teamVue');
             this.$router.push({path:'/login'})
         }

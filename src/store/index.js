@@ -39,9 +39,8 @@ let store = new Vuex.Store({
         smallNewItem(state,params){ // 当前想要修改的小任务
             state.newSmallItem = params.item;
         }
-    },
-    actions: {
-
     }
 })
+
+// 暴露
 export default store;

@@ -7,7 +7,7 @@
 <script>
 import Header from '@/view/main/head/head'
 export default{
-    components:{
+    components:{ // 注册组件并使用
         Header
     }
 }
