@@ -87,8 +87,6 @@ export default{
                 this.haveDate = data.doc.smallDate.substring(0,10);
             }
         })
-    },
-    computed:{
     }
 }
 </script>

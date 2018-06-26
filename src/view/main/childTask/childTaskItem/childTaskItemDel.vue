@@ -24,7 +24,7 @@ export default{
         }
     },
     methods:{
-        yesDel(){
+        yesDel(){ // 点击后彻底删除
             let id = this.item._id;
             this.http.postThorough({id:id}).then(({data})=>{
                 if(data.success){
@@ -36,7 +36,7 @@ export default{
                 }
             })
         },
-        noDel(){
+        noDel(){ // 还原当前数据
             let id = this.item._id;
             this.http.postDel({id:id,bl:false}).then(({data})=>{
                 if(data.success){

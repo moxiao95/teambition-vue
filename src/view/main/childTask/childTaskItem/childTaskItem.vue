@@ -27,11 +27,6 @@ export default{
             }
         }
     },
-    data(){
-        return {
-            
-        }
-    },
     methods:{
         clickToStar(){ // 这是点击星标的事件，点亮或取消
             this.http.postStar({id:this.item._id,bl:!this.item.itemStar}).then(({data})=>{
