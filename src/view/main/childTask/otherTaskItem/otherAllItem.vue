@@ -64,6 +64,7 @@ export default{
         }
     },
     created(){
+        // 先要获取到当前用户的项目id，其实可以不用把获取到的项目信息放到vuex中，直接放在当前页面中就行
         let id = this.$route.query.itemId;
         this.http.getDetailAll({id:id}).then(({data})=>{
             this.$store.commit('addUserItemList',{list:data.doc});
