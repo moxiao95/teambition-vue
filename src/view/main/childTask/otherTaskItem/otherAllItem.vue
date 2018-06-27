@@ -34,10 +34,10 @@ export default{
         }
     },
     methods:{
-        addShowBox(){
+        addShowBox(){ // 改变当前的装填
             this.addItemShow = false;
         },
-        addBoxCancel(){
+        addBoxCancel(){ // 改变状态，清空value
             this.addItemShow = true;
             this.addValue = '';
         },

@@ -106,9 +106,6 @@ export default{
             })
         }
     },
-    computed:{
-        
-    },
     created(){
         this.bl = typeof this.$route.query.itemId === 'undefined'?true:false;
         if(this.bl){
