@@ -44,9 +44,6 @@
 </template>
 <script>
 export default{
-    components:{
-        
-    },
     data(){
         return {
             nowItem:true
@@ -76,9 +73,6 @@ export default{
         nowItemTitle(){
             return this.$store.state.otherHeadItem;
         }
-    },
-    created(){
-        
     }
 }
 </script>

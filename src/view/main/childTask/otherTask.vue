@@ -1,6 +1,8 @@
 <template>
 <section class="other-task-box">
+    <!-- 头部区域 -->
     <OtherHead />
+    <!-- 要渲染的页面 -->
     <router-view></router-view>
     <!-- 修改框 -->
     <Edit v-if="editShow"/>
